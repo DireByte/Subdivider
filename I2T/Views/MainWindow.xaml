@@ -1,0 +1,319 @@
+﻿<Window
+    x:Class="I2T.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customcontrols="clr-namespace:I2T.CustomControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:viewmodels="clr-namespace:I2T.ViewModels"
+    Title="Subdivider"
+    Width="1920"
+    Height="1080"
+    MinWidth="800"
+    MinHeight="600"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="47*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Margin="0,10,0,10">
+            <MenuItem Header="File">
+                <MenuItem
+                    Name="openImage"
+                    Command="{Binding OpenImageCommand}"
+                    Header="Open Image" />
+                <MenuItem
+                    Name="exportToPDF"
+                    Command="{Binding ExportImageCommand}"
+                    Header="Export to PDF" />
+            </MenuItem>
+
+            <MenuItem Command="{Binding WebsiteCommand}">
+                <MenuItem.Header>
+                    <TextBlock Text="Website" />
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Command="{Binding CoffeeCommand}" Foreground="#00A878">
+                <MenuItem.Header>
+                    <TextBlock FontWeight="Bold" Text="Buy us a Coffee" />
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Header="License" Command="{Binding LicenseCommand}">
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <customcontrols:ImageViewControl
+                Grid.Column="1"
+                OverlapROIColor="{Binding OverlapROIColor, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+                OverlapRois="{Binding TemplateImage.OverlapRois, Mode=TwoWay}"
+                PageROIColor="{Binding PageROIColor, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+                PageRois="{Binding TemplateImage.PageRois, Mode=TwoWay}"
+                PageSelect="{Binding PageSelect, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+                Point1="{Binding Point1, Mode=TwoWay}"
+                Point2="{Binding Point2, Mode=Twoway}"
+                SelectorColor="{Binding SelectorColor, Mode=Twoway, NotifyOnSourceUpdated=True}"
+                TemplateImage="{Binding TemplateImage, Mode=TwoWay}" />
+
+            <Grid
+                x:Name="ControlsPanel"
+                Grid.Column="0"
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="#121212">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Row="0" Source="/Views/logo.png" />
+
+                <GroupBox Grid.Row="1" Margin="10,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="100" />
+
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer Grid.Row="0">
+                            <Grid>
+
+
+                                <StackPanel Margin="5">
+
+                                    <Expander
+                                        Name="ScaleSettings"
+                                        Padding="10"
+                                        Background="#27323A"
+                                        ExpandDirection="Down"
+                                        FontSize="16"
+                                        Header="Scale Settings"
+                                        IsExpanded="True">
+
+                                        <StackPanel>
+                                            <GroupBox
+                                                Margin="0,10,0,0"
+                                                FontStyle="Normal"
+                                                FontWeight="Normal"
+                                                Header="Unit of Measurement">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel
+                                                        Grid.Row="0"
+                                                        Margin="5"
+                                                        Orientation="Horizontal">
+                                                        <RadioButton
+                                                            HorizontalAlignment="Left"
+                                                            Content="Cenitimeter"
+                                                            IsChecked="{Binding SetUnit}" />
+                                                        <RadioButton
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            Content="Inches" />
+                                                    </StackPanel>
+                                                    <Label
+                                                        Grid.Row="1"
+                                                        Margin="0,0,0,15"
+                                                        FontSize="20">
+                                                        Input
+                                                    </Label>
+                                                    <ui:NumberBox
+                                                        Grid.Row="2"
+                                                        Minimum=".001"
+                                                        SpinButtonPlacementMode="Inline"
+                                                        Value="{Binding SelectionLength}" />
+
+                                                </Grid>
+
+                                            </GroupBox>
+
+
+                                            <GroupBox Header="Paper Size Selection">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        ItemsSource="{Binding PaperSizes}"
+                                                        SelectedItem="{Binding SelectedPaperSize}" />
+                                                </Grid>
+                                            </GroupBox>
+                                            <!--   <Line
+                                        Margin="0,30,0,20"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        X1="0"
+                                        X2="250" />
+                                            -->
+                                            <GroupBox Header="Overlap Settings">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition MinHeight="30" />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <CheckBox
+                                                        Grid.Row="0"
+                                                        Content="Enable Overlap"
+                                                        IsChecked="{Binding EnableOverlap}" />
+                                                    <Label
+                                                        Grid.Row="1"
+                                                        HorizontalAlignment="Center"
+                                                        Content="{Binding OverlapValue}" />
+                                                    <Slider
+                                                        Grid.Row="2"
+                                                        IsEnabled="{Binding EnableOverlap}"
+                                                        LargeChange="5"
+                                                        Maximum="25"
+                                                        SmallChange="0"
+                                                        Value="{Binding OverlapValue}" />
+                                                </Grid>
+                                            </GroupBox>
+                                            <GroupBox Header="Enable Page Selection">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <CheckBox IsChecked="{Binding PageSelect}" />
+                                                </Grid>
+                                            </GroupBox>
+                                        </StackPanel>
+
+                                    </Expander>
+
+                                    <!--
+                                    <Line
+                                        Margin="0,30,0,20"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Stroke="White"
+                                        StrokeThickness="1"
+                                        X1="0"
+                                        X2="250" />-->
+
+                                    <Expander
+                                        Name="ColorSettings"
+                                        Padding="10"
+                                        Background="#435055"
+                                        ExpandDirection="Down"
+                                        FontSize="16"
+                                        Header="Color Settings"
+                                        IsExpanded="false">
+
+                                        <StackPanel>
+
+                                            <GroupBox Header="Selection Tool Color">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        ItemsSource="{Binding Colors}"
+                                                        SelectedItem="{Binding SelectorSelectedColor}" />
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <GroupBox Header="Page ROI Color">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        ItemsSource="{Binding Colors}"
+                                                        SelectedItem="{Binding PageROISelectedColor}" />
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <GroupBox
+                                                FontStyle="Normal"
+                                                FontWeight="Normal"
+                                                Header="Overlap ROI Color">
+
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        ItemsSource="{Binding Colors}"
+                                                        SelectedItem="{Binding OverlapROISelectedColor}" />
+                                                </Grid>
+                                            </GroupBox>
+                                        </StackPanel>
+                                    </Expander>
+
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+
+                        <Button
+                            Grid.Row="2"
+                            HorizontalAlignment="Stretch"
+                            Background="#00A878"
+                            Command="{Binding CanvasClickCommand}"
+                            Content="Recalculate" />
+
+
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

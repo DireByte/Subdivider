@@ -30,7 +30,7 @@ namespace I2T.ViewModels
         private string _theme = "Light";
         private double selectionLength = 1.0;
         private string ppi = "300";
-        private bool unit= true;
+        private bool isInches = true;
         private TemplateImage templateImage;
         private ObservableCollection<string> paperSizes;
         private ObservableCollection<string> colors;
@@ -211,10 +211,10 @@ namespace I2T.ViewModels
 
         public bool SetUnit
         {
-            get { return unit; }
+            get { return isInches; }
             set
             {
-                SetProperty(ref unit, value);
+                SetProperty(ref isInches, value);
             }
         }
 
@@ -438,13 +438,13 @@ namespace I2T.ViewModels
 
         public double DetermineUnit()
         {
-            if (this.unit == true)
+            if (this.isInches == true)
             {
-                return .393701;
+                return 1;
             }
             else
             {
-                return 1;
+                return .393701;
             }
         }
 

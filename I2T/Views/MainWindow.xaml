@@ -142,13 +142,13 @@
                                                         Margin="5"
                                                         Orientation="Horizontal">
                                                         <RadioButton
-                                                            HorizontalAlignment="Left"
-                                                            Content="Cenitimeter"
-                                                            IsChecked="{Binding SetUnit}" />
+                                                            HorizontalAlignment="Right"
+                                                            Content="Cenitimeter"/>
                                                         <RadioButton
                                                             HorizontalAlignment="Left"
                                                             VerticalAlignment="Center"
-                                                            Content="Inches" />
+                                                            Content="Inches"
+														    IsChecked="{Binding SetUnit}" />
                                                     </StackPanel>
                                                     <Label
                                                         Grid.Row="1"
@@ -197,7 +197,7 @@
                                                     </Grid.RowDefinitions>
                                                     <CheckBox
                                                         Grid.Row="0"
-                                                        Content="Enable Overlap"
+                                                        Content="Enable Overlap (%)"
                                                         IsChecked="{Binding EnableOverlap}" />
                                                     <Label
                                                         Grid.Row="1"

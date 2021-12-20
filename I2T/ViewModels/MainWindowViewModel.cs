@@ -50,6 +50,9 @@ namespace I2T.ViewModels
         private bool enableOverlap = false;
         private int overlapValue = 0;
 
+        //Image Processing
+        private bool enableCanny = false;
+
         private bool pageSelect = false;
 
 
@@ -249,7 +252,7 @@ namespace I2T.ViewModels
         /// </summary>
         public bool EnableOverlap
         {
-            get { return enableOverlap; }
+            get { return this.enableOverlap; }
             set
             {
                 SetProperty(ref enableOverlap, value);
@@ -258,6 +261,17 @@ namespace I2T.ViewModels
                 
             }
         }
+
+        public bool EnableCanny
+		{
+			get {  return this.enableCanny;}
+			set
+			{
+                SetProperty(ref enableCanny, value);
+                if(this.TemplateImage != null)
+                    this.TemplateImage.Canny = value;
+            }
+		}
 
         /// <summary>
         /// Overlap Value percentage 0-20

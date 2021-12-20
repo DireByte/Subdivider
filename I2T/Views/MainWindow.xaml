@@ -81,7 +81,7 @@
                 Point1="{Binding Point1, Mode=TwoWay}"
                 Point2="{Binding Point2, Mode=Twoway}"
                 SelectorColor="{Binding SelectorColor, Mode=Twoway, NotifyOnSourceUpdated=True}"
-                TemplateImage="{Binding TemplateImage, Mode=TwoWay}" />
+	            DisplayImage="{Binding TemplateImage.DisplayImageSource, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
 
             <Grid
                 x:Name="ControlsPanel"
@@ -235,6 +235,33 @@
                                         X1="0"
                                         X2="250" />-->
 
+									<Expander
+										Name="ImageProcessing"
+										Padding="10"
+                                        Background="#27323A"
+                                        ExpandDirection="Down"
+                                        FontSize="16"
+                                        Header="Image Processing"
+                                        IsExpanded="True">
+
+										<StackPanel>
+											<GroupBox
+												Header="Color Filters">
+												<Grid>
+													<Grid.RowDefinitions>
+														<RowDefinition />
+													</Grid.RowDefinitions>
+													<CheckBox Grid.Row="0"
+															  Content="B/W Edges"
+															  IsChecked="{Binding EnableCanny}" />
+
+												</Grid>
+
+											</GroupBox>
+										</StackPanel>
+									
+									</Expander>
+									
                                     <Expander
                                         Name="ColorSettings"
                                         Padding="10"

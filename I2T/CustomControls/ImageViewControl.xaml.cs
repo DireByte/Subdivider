@@ -26,33 +26,35 @@ namespace I2T.CustomControls
         #region External Binding Properties
 
         //dependency property for TemplateImage
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register(
-            "TemplateImage",
-            typeof(TemplateImage),
+        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
+            "DisplayImage",
+            typeof(BitmapSource),
             typeof(ImageViewControl),
             new FrameworkPropertyMetadata(null,
             FrameworkPropertyMetadataOptions.AffectsRender,
-            new PropertyChangedCallback(TemplateImageChanged)
+            new PropertyChangedCallback(DisplayImageChanged)
             )
         );
 
-        public TemplateImage TemplateImage //TemplateImage that is bound to ImageProperty
+        public BitmapSource DisplayImage //TemplateImage that is bound to ImageProperty
         {
-            get { return (TemplateImage)GetValue(ImageProperty); }
+            get { return (BitmapSource)GetValue(ImageSourceProperty); }
             set { 
-                SetValue(ImageProperty, value); 
-                imageDisplay.Source = value.GetBitmapImageSource(BitmapSelection.Working); 
+                SetValue(ImageSourceProperty, value); 
+                imageDisplay.Source = value; 
                 UpdatePageCanvas();
-                ResetCanvas(value.WorkingImage.Cols, value.WorkingImage.Rows);
+                ResetCanvas(value.Width, value.Height);
             }
         }
-        private static void TemplateImageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs arg)  //Updates TemplateImage on property changed
+        private static void DisplayImageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs arg)  //Updates TemplateImage on property changed
         {
             if (sender != null)
             {
-                ((ImageViewControl)sender).TemplateImage = (TemplateImage)arg.NewValue;
+                ((ImageViewControl)sender).DisplayImage = (BitmapSource)arg.NewValue;
             }
         }
+
+
 
         //dependency property for PageRois
         public static readonly DependencyProperty PageRoisProperty = DependencyProperty.Register(

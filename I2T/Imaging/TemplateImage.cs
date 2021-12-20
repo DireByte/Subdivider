@@ -16,33 +16,46 @@ using I2T.CustomControls.UIElements;
 
 namespace I2T.Imaginng
 {
-    public enum BitmapSelection
-        {
-            Original,
-            Working
-        }
-
+    public enum DisplayImage
+    {
+        Origninal,
+        Working
+    }
 
     public class TemplateImage: BindableBase
     {
-
 		#region BindableProperties
 
 		#region private
+        private DisplayImage displayImage = DisplayImage.Working;
+        private BitmapSource displayImageSource;
 
         private ObservableCollection<Rectangle> pageRois;
         private ObservableCollection<Rectangle> overlapRois;
         private double overlapPercentage;
         private bool overlap = false;
+        private bool canny = false;
 
 		#endregion
 
 		#region Public
 
         /// <summary>
-        /// Page ROIs used to designate Scaled portion of image 
+        /// Returns the current selected Display Image
         /// </summary>
-        public ObservableCollection<Rectangle> PageRois
+        public BitmapSource DisplayImageSource
+		{
+			get { return this.displayImageSource; }
+            set
+            {
+                SetProperty(ref this.displayImageSource, value);
+			}
+		}
+
+		/// <summary>
+		/// Page ROIs used to designate Scaled portion of image 
+		/// </summary>
+		public ObservableCollection<Rectangle> PageRois
 		{
 			get {  return pageRois; }
 			set
@@ -87,6 +100,29 @@ namespace I2T.Imaginng
 			}
 		}
 
+        public DisplayImage DisplayImage
+		{
+			get { return this.displayImage; }
+			set
+			{
+                SetProperty(ref this.displayImage, value);
+			}
+		}
+
+        public bool Canny
+		{
+			get { return this.canny;}
+			set
+			{
+                SetProperty(ref this.canny, value);
+                if(value)
+                    this.WorkingImage = ProcessCanny();
+                else
+                    this.WorkingImage = this.OriginalImage.Clone();
+                DisplayImageSource = GetDispalyImageSource();
+            }
+		}
+
 		#endregion
 
 		#endregion BindableProperties
@@ -101,6 +137,7 @@ namespace I2T.Imaginng
         /// Image Used for processing
         /// </summary>
         public Image<Bgr, Byte> WorkingImage { get; set;}
+
         public static TemplateImage copyTemplate;
         /// <summary>
         /// Pixels per inch setting
@@ -144,47 +181,47 @@ namespace I2T.Imaginng
             this.WorkingImage = this.OriginalImage.Clone();
             this.Overlap = overlap;
             this.OverlapPercentage = overlapPercentage * .01;
+            this.DisplayImageSource = GetDispalyImageSource();
 
         }
 
 		#endregion Constructor
 
-		#region Supporting Methods
+		#region Private Supporting Methods
 
-        /// <summary>
-        /// Return Bitmap of Template image
-        /// </summary>
-        /// <param name="selection">Select Original or Working</param>
-        /// <returns>bitmap selected</returns>
-		public Bitmap GetBitmap(BitmapSelection selection)
-        {
-            switch(selection)
-            {
-                case BitmapSelection.Original:
-                    return this.OriginalImage.Mat.ToBitmap();
-                case BitmapSelection.Working:
-                    return this.WorkingImage.Mat.ToBitmap();
+        private BitmapSource GetDispalyImageSource()
+		{
+			switch (this.displayImage)
+			{
+                case DisplayImage.Origninal:
+                    return this.OriginalImage.ToBitmapSource();
+                    break;
+                case DisplayImage.Working:
+                    return this.WorkingImage.ToBitmapSource();
+                    break;
                 default:
-                    return new Bitmap(0,0);
-            }
-        }
-        /// <summary>
-        /// Get Bitmap image source for wpf display
-        /// </summary>
-        /// <param name="selection">select working or original</param>
-        /// <returns>Bitmap selected</returns>
-        public BitmapSource GetBitmapImageSource(BitmapSelection selection)
-        {
-            switch (selection)
-            {
-                case BitmapSelection.Original:
-                    return this.OriginalImage.Mat.ToBitmapSource();
-                case BitmapSelection.Working:
-                    return this.WorkingImage.Mat.ToBitmapSource();
-                default:
-                    return this.OriginalImage.Mat.ToBitmapSource();
-            }
-        }
+                    return this.WorkingImage.ToBitmapSource();
+                    break;
+			}           
+		}
+
+        private Image<Bgr, Byte> ProcessCanny()
+		{
+            var image = this.OriginalImage.Clone();
+
+            image = image.Convert<Gray,byte>()
+                .Canny(100,100)
+                .ThresholdBinaryInv(new Gray(150),new Gray(255))
+                .Convert<Bgr,byte>();
+
+            image.ToBitmap().Save("test.bmp");
+            return image;
+		}
+
+        #endregion Private Supporting Methods
+
+
+        #region Public Methods
 
         /// <summary>
         /// Recalculates the template rois and overlaps

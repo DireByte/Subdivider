@@ -27,8 +27,6 @@ namespace Subdivider.Imaginng
 		#region BindableProperties
 
 		#region private
-        private DisplayImage displayImage = DisplayImage.Working;
-        private BitmapSource displayImageSource;
 
         private ObservableCollection<Rectangle> pageRois;
         private ObservableCollection<Rectangle> overlapRois;
@@ -39,18 +37,6 @@ namespace Subdivider.Imaginng
 		#endregion
 
 		#region Public
-
-        /// <summary>
-        /// Returns the current selected Display Image
-        /// </summary>
-        public BitmapSource DisplayImageSource
-		{
-			get { return this.displayImageSource; }
-            set
-            {
-                SetProperty(ref this.displayImageSource, value);
-			}
-		}
 
 		/// <summary>
 		/// Page ROIs used to designate Scaled portion of image 
@@ -100,26 +86,12 @@ namespace Subdivider.Imaginng
 			}
 		}
 
-        public DisplayImage DisplayImage
-		{
-			get { return this.displayImage; }
-			set
-			{
-                SetProperty(ref this.displayImage, value);
-			}
-		}
-
         public bool Canny
 		{
 			get { return this.canny;}
 			set
 			{
                 SetProperty(ref this.canny, value);
-                if(value)
-                    this.WorkingImage = ProcessCanny();
-                else
-                    this.WorkingImage = this.OriginalImage.Clone();
-                DisplayImageSource = GetDispalyImageSource();
             }
 		}
 
@@ -181,40 +153,11 @@ namespace Subdivider.Imaginng
             this.WorkingImage = this.OriginalImage.Clone();
             this.Overlap = overlap;
             this.OverlapPercentage = overlapPercentage * .01;
-            this.DisplayImageSource = GetDispalyImageSource();
-
         }
 
 		#endregion Constructor
 
 		#region Private Supporting Methods
-
-        private BitmapSource GetDispalyImageSource()
-		{
-			switch (this.displayImage)
-			{
-                case DisplayImage.Origninal:
-                    return this.OriginalImage.ToBitmapSource();
-                    break;
-                case DisplayImage.Working:
-                    return this.WorkingImage.ToBitmapSource();
-                    break;
-                default:
-                    return this.WorkingImage.ToBitmapSource();
-                    break;
-			}           
-		}
-
-        private Image<Bgr, Byte> ProcessCanny()
-		{
-            var image = this.OriginalImage.Clone();
-
-            image = image.Convert<Gray,byte>()
-                .Canny(100,100)
-                .ThresholdBinaryInv(new Gray(150),new Gray(255))
-                .Convert<Bgr,byte>();
-            return image;
-		}
 
         #endregion Private Supporting Methods
 
@@ -355,7 +298,7 @@ namespace Subdivider.Imaginng
         public PdfDocument BuildPdfDoc()
         {
 
-            var image = this.OriginalImage.Clone();
+            var image = this.WorkingImage.Clone();
             //if(enableRegistrations)
             //    DrawRegistrationMarks(image.Mat, pageROIS);
 

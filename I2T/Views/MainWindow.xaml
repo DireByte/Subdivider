@@ -77,11 +77,11 @@
                 OverlapRois="{Binding TemplateImage.OverlapRois, Mode=TwoWay}"
                 PageROIColor="{Binding PageROIColor, Mode=TwoWay, NotifyOnSourceUpdated=True}"
                 PageRois="{Binding TemplateImage.PageRois, Mode=TwoWay}"
-                PageSelect="{Binding PageSelect, Mode=TwoWay, NotifyOnSourceUpdated=True}"
+				PageSelect="{Binding EnablePageSelection, Mode=TwoWay, NotifyOnSourceUpdated=True}"
                 Point1="{Binding Point1, Mode=TwoWay}"
                 Point2="{Binding Point2, Mode=Twoway}"
                 SelectorColor="{Binding SelectorColor, Mode=Twoway, NotifyOnSourceUpdated=True}"
-	            DisplayImage="{Binding TemplateImage.DisplayImageSource, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
+	            DisplayImage="{Binding DisplayImage, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
 
             <Grid
                 x:Name="ControlsPanel"
@@ -119,7 +119,7 @@
                                     <Expander
                                         Name="ScaleSettings"
                                         Padding="10"
-                                        Background="#27323A"
+								        Background="#435055"
                                         ExpandDirection="Down"
                                         FontSize="16"
                                         Header="Scale Settings"
@@ -148,7 +148,7 @@
                                                             HorizontalAlignment="Left"
                                                             VerticalAlignment="Center"
                                                             Content="Inches"
-														    IsChecked="{Binding SetUnit}" />
+														    IsChecked="{Binding IsInches}" />
                                                     </StackPanel>
                                                     <Label
                                                         Grid.Row="1"
@@ -218,7 +218,7 @@
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
 
-                                                    <CheckBox IsChecked="{Binding PageSelect}" />
+													<CheckBox IsChecked="{Binding EnablePageSelection}" />
                                                 </Grid>
                                             </GroupBox>
                                         </StackPanel>
@@ -251,9 +251,44 @@
 													<Grid.RowDefinitions>
 														<RowDefinition />
 													</Grid.RowDefinitions>
-													<CheckBox Grid.Row="0"
-															  Content="B/W Edges"
-															  IsChecked="{Binding EnableCanny}" />
+													<GroupBox Header="Canny Edges (Beta)">
+														<Grid>
+															<Grid.RowDefinitions>
+															<RowDefinition></RowDefinition>
+															<RowDefinition></RowDefinition>
+															<RowDefinition></RowDefinition>
+															<RowDefinition></RowDefinition>
+															<RowDefinition></RowDefinition>
+															<RowDefinition></RowDefinition>
+															</Grid.RowDefinitions>
+															<TextBlock Grid.Row="0" 
+																	   TextWrapping="Wrap" 
+																	   Margin="0,0,0,5"
+																	   Text="Edge detection may be slow based on image size and hardware."></TextBlock>
+														    <CheckBox Grid.Row="1"
+																  Content="Enable Edges"
+																  IsChecked="{Binding EnableCanny}" />
+															<Label Grid.Row="2" Content="Thresh"></Label>
+															<Slider Grid.Row="3"
+																	AutoToolTipPlacement="TopLeft"
+																    IsEnabled="{Binding EnableCanny}"
+																	LargeChange="5"
+																	Minimum="0"
+																	Maximum="255"
+																	SmallChange="0"
+																	Value="{Binding CannyThresh}" />
+															<Label Grid.Row="4" Content="LinkThresh"></Label>
+															<Slider Grid.Row="5"
+																	AutoToolTipPlacement="TopLeft"
+															    	IsEnabled="{Binding EnableCanny}"
+																	LargeChange="5"
+																	Minimum="0"
+																	Maximum="255"
+																	SmallChange="0"
+																	Value="{Binding CannyThreshLinking}" />
+														</Grid>
+													</GroupBox>
+													
 
 												</Grid>
 
@@ -334,7 +369,7 @@
                             Grid.Row="2"
                             HorizontalAlignment="Stretch"
                             Background="#00A878"
-                            Command="{Binding CanvasClickCommand}"
+                            Command="{Binding Recalculate}"
                             Content="Recalculate" />
 
 

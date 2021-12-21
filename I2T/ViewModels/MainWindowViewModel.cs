@@ -18,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Subdivider.Imaging;
 
 namespace Subdivider.ViewModels
 {
@@ -26,51 +27,112 @@ namespace Subdivider.ViewModels
 
         #region private Properties
 
+        #region Theme
+
         private string _title = "Subdivider";
         private string _theme = "Light";
+
+        #endregion Theme
+
+        #region Settings
+
+        //Scale Settings
+        private bool isInches = true;
         private double selectionLength = 1.0;
         private string ppi = "300";
-        private bool isInches = true;
-        private TemplateImage templateImage;
         private ObservableCollection<string> paperSizes;
-        private ObservableCollection<string> colors;
-        public Image<Bgr, Byte> temp { get; set; }
         private string selectedPaperSize = "USLetter";
-        private string pageROISelectedColor = "Red";
-        private string overlapSelectedROIColor = "Green";
-        private string selectorSelectedColor = "Yellow";
-        
+        private bool enableOverlap = false;
+        private int overlapValue = 0;
+        bool enablePageSelection = false;
         private PointB point1;
         private PointB point2;
 
-        public static double imageWidth;
-        public static double imageHeight;
-
-        private bool enablePDFAutoOpen = true;
-        private bool enableOverlap = false;
-        private int overlapValue = 0;
-
-        //Image Processing
-        private bool enableCanny = false;
-
-        private bool pageSelect = false;
-
-
+        //Color Settings
+        private ObservableCollection<string> colors;
+        private string pageROISelectedColor = "Red";
+        private string overlapSelectedROIColor = "Green";
+        private string selectorSelectedColor = "Yellow";
         private LineColor selectorColor = Lines.Color["Yellow"];
         private LineColor pageROIColor = Lines.Color["Red"];
         private LineColor overlapROIColor = Lines.Color["Green"];
 
+        //Image Processing
+        private bool enableCanny = false;
+        private double cannyThresh = 150;
+        private double cannyThreshLinking = 150;
+
+        // App Functionality
+        private bool enablePDFAutoOpen = true;
+        
+		#endregion Settings
+
+		private TemplateImage templateImage;
+        private BitmapSource displayImage;
+        public static double imageWidth;
+        public static double imageHeight;
+
+
+
         #endregion
 
-
         #region Public Properties
+
+        #region Theme
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
+        }
+
+
+        public string ThemeSwitch
+        {
+            get { return _theme; }
+            set { SetProperty(ref _theme, value); }
+        }
+
+        #endregion Theme
+
+        #region Settings
+
+        #region Scale Settings
+        /// <summary>
+        /// Radio Button property for IsInches
+        /// </summary>
+        public bool IsInches
+        {
+            get { return isInches; }
+            set
+            {
+                SetProperty(ref isInches, value);
+            }
+        }
+        /// <summary>
+        /// Selection Length Creates a new PPI based on selection length and the unit selected.
+        /// </summary>
+        public double SelectionLength
+        {
+            get { return this.selectionLength; }
+            set
+            {
+                this.PPI = Math.Round(300 * (value * DetermineUnit())).ToString();
+                SetProperty(ref selectionLength, value);
+            }
+        }
+
+        public string PPI
+        {
+            get { return ppi; }
+            set { SetProperty(ref ppi, value); }
+        }
 
         /// <summary>
         /// Paper Sizes for selection box
         /// </summary>
-        public ObservableCollection<string> PaperSizes 
+        public ObservableCollection<string> PaperSizes
         {
-            get { return paperSizes;}
+            get { return paperSizes; }
             set
             {
                 SetProperty(ref paperSizes, value);
@@ -82,7 +144,7 @@ namespace Subdivider.ViewModels
         /// </summary>
         public string SelectedPaperSize
         {
-            get { return selectedPaperSize;}
+            get { return selectedPaperSize; }
             set
             {
                 SetProperty(ref selectedPaperSize, value);
@@ -90,6 +152,75 @@ namespace Subdivider.ViewModels
             }
         }
 
+        /// <summary>
+        /// Overlap enable toggle
+        /// </summary>
+        public bool EnableOverlap
+        {
+            get { return this.enableOverlap; }
+            set
+            {
+                SetProperty(ref enableOverlap, value);
+                if (TemplateImage != null)
+                    this.TemplateImage.Overlap = value;
+
+            }
+        }
+
+        /// <summary>
+        /// Overlap Value percentage 0-20
+        /// </summary>
+        public int OverlapValue
+        {
+            get { return overlapValue; }
+            set
+            {
+                SetProperty(ref overlapValue, value);
+                if (this.TemplateImage != null)
+                    this.TemplateImage.OverlapPercentage = value * .01;
+            }
+        }
+
+        /// <summary>
+        /// Enables Page selection overlay
+        /// </summary>
+        public bool EnablePageSelection
+        {
+            get { return this.enablePageSelection; }
+            set
+            {
+                SetProperty(ref this.enablePageSelection, value);
+            }
+        }
+
+        /// <summary>
+        /// Selection point 1 (Left CLick on image view tool)
+        /// </summary>
+        public PointB Point1
+        {
+            get { return point1; }
+            set
+            {
+                SetProperty(ref point1, value);
+            }
+
+        }
+
+        /// <summary>
+        /// Selection point 2 (Right CLick on image view tool)
+        /// </summary>
+        public PointB Point2
+        {
+            get { return point2; }
+            set
+            {
+                SetProperty(ref point2, value);
+            }
+
+        }
+        #endregion Scale Settings
+
+        #region Color Settings
 
         /// <summary>
         /// Coloers possible to select for UI elements
@@ -103,7 +234,6 @@ namespace Subdivider.ViewModels
             }
         }
 
-        
         /// <summary>
         /// Page ROI Color
         /// </summary>
@@ -147,9 +277,11 @@ namespace Subdivider.ViewModels
         /// <summary>
         /// selection tool color object
         /// </summary>
-        public LineColor SelectorColor { 
-            get{return selectorColor; }
-            set{
+        public LineColor SelectorColor
+        {
+            get { return selectorColor; }
+            set
+            {
                 SetProperty(ref selectorColor, value);
             }
         }
@@ -164,7 +296,9 @@ namespace Subdivider.ViewModels
                 SetProperty(ref pageROIColor, value);
             }
         }
-
+        /// <summary>
+        /// Color for the oberlap ROIs
+        /// </summary>
         public LineColor OverlapROIColor
         {
             get { return overlapROIColor; }
@@ -174,18 +308,43 @@ namespace Subdivider.ViewModels
             }
         }
 
-        public string Title
+
+		#endregion Color Settings
+
+		#region Image Processing Settings
+		public bool EnableCanny
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get { return this.enableCanny; }
+            set
+            {
+                SetProperty(ref enableCanny, value);
+                ReprocessImageProcessing();
+            }
         }
 
-
-        public string ThemeSwitch
+        public double CannyThresh
+		{
+			get { return this.cannyThresh;}
+			set
+			{
+                SetProperty(ref this.cannyThresh, value);
+                ReprocessImageProcessing();
+			}
+		}
+        public double CannyThreshLinking
         {
-            get { return _theme; }
-            set { SetProperty(ref _theme, value); }
+            get { return this.cannyThreshLinking; }
+            set
+            {
+                SetProperty(ref this.cannyThreshLinking, value);
+                ReprocessImageProcessing();
+            }
         }
+
+        #endregion Image Processing Settings
+
+        #endregion Settings 
+
 
         public TemplateImage TemplateImage
         {
@@ -193,106 +352,14 @@ namespace Subdivider.ViewModels
             set {  SetProperty(ref templateImage, value);}
         }
 
-        public double SelectionLength
-        {
-            get { return this.selectionLength; }
-            set
-            {
-
-                this.CurrentPPI = Math.Round(300 * (value*DetermineUnit())).ToString();
-
-                Debug.WriteLine("1:" + this.CurrentPPI);
-                SetProperty(ref selectionLength, value);
-            }
-        }
-
-        public string CurrentPPI
-        {
-            get { return ppi;}
-            set { SetProperty(ref ppi, value);}
-        }
-
-        public bool SetUnit
-        {
-            get { return isInches; }
-            set
-            {
-                SetProperty(ref isInches, value);
-            }
-        }
-
-        /// <summary>
-        /// Selection point 1 (Left CLick on image view tool)
-        /// </summary>
-        public PointB Point1 
-        {
-            get {return point1;}
-            set
-            {
-                SetProperty(ref point1, value);
-            }
-
-        }
-
-        /// <summary>
-        /// Selection point 2 (Right CLick on image view tool)
-        /// </summary>
-        public PointB Point2
-        {
-            get {return point2; }
-            set
-            {
-                SetProperty(ref point2, value);
-            }
-
-        }
-
-        /// <summary>
-        /// Overlap enable toggle
-        /// </summary>
-        public bool EnableOverlap
-        {
-            get { return this.enableOverlap; }
-            set
-            {
-                SetProperty(ref enableOverlap, value);
-                if(TemplateImage != null)
-                    this.TemplateImage.Overlap = value;
-                
-            }
-        }
-
-        public bool EnableCanny
+        public BitmapSource DisplayImage
 		{
-			get {  return this.enableCanny;}
+			get { return this.displayImage;}
 			set
 			{
-                SetProperty(ref enableCanny, value);
-                if(this.TemplateImage != null)
-                    this.TemplateImage.Canny = value;
-            }
+                SetProperty(ref this.displayImage, value);
+			}
 		}
-
-        /// <summary>
-        /// Overlap Value percentage 0-20
-        /// </summary>
-        public int OverlapValue
-        {
-            get { return overlapValue; }
-            set
-            {
-                SetProperty(ref overlapValue, value);
-                if(this.TemplateImage != null)
-                    this.TemplateImage.OverlapPercentage = value * .01;
-            }
-        }
-
-        public bool PageSelect
-        {
-            get { return pageSelect; }
-            set { SetProperty(ref pageSelect, value); }
-        }
-
 
         #endregion
 
@@ -301,7 +368,7 @@ namespace Subdivider.ViewModels
         public DelegateCommand OpenImageCommand { get; private set;}
         public DelegateCommand SliceImageCommand { get; private set;}
         public DelegateCommand ExportImageCommand { get; private set; }
-        public DelegateCommand CanvasClickCommand { get; private set;}
+        public DelegateCommand Recalculate { get; private set;}
         public DelegateCommand ThemeSwitchCommand { get; private set; }
         public DelegateCommand LicenseCommand { get; private set; }
 
@@ -314,21 +381,20 @@ namespace Subdivider.ViewModels
 
         #endregion
 
-
         #region Constuctor
         public MainWindowViewModel()
         {
             PaperSizes = new ObservableCollection<string>(Papers.Sizes.Keys);
             Colors= new ObservableCollection<string>(Lines.Color.Keys);
             OpenImageCommand = new DelegateCommand(LoadImage);
-            SliceImageCommand = new DelegateCommand(Slice);
             ExportImageCommand = new DelegateCommand(Export);
-            CanvasClickCommand = new DelegateCommand(CanvasClickRecalc);
+            Recalculate = new DelegateCommand(Recalc);
             ThemeSwitchCommand = new DelegateCommand(ThemeSwap);
             LicenseCommand = new DelegateCommand(LicenseDisplay);
             HelpCommand = new DelegateCommand(HelpDisplay);
             CoffeeCommand = new DelegateCommand(CoffeeDisplay);
             WebsiteCommand = new DelegateCommand(WebsiteDisplay);
+            //SliceImageCommand = new DelegateCommand(Slice);
             //PDFCommand = new DelegateCommand(PDFDisplay);
             //UnitCommand = new DelegateCommand(UnitSet);
             //MouseClickedCommand = new DelegateCommand(GetPosition);
@@ -336,22 +402,15 @@ namespace Subdivider.ViewModels
             //RightClickCommand = new DelegateCommand(RightPosition(sender, e));
         }
 
-   
-
-
-
-
-
         #endregion
 
-
-        #region Private Methods
-
+        #region Command Methods
         public void LoadImage()
         {
-            OpenFileDialog ofd = new OpenFileDialog() { 
-               Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png",
-               DereferenceLinks = false,
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png",
+                DereferenceLinks = false
             };
 
             if (ofd.ShowDialog() == true)
@@ -359,53 +418,42 @@ namespace Subdivider.ViewModels
                 TemplateImage = new TemplateImage(ofd.FileName, Papers.Sizes[SelectedPaperSize], Lines.Color[PageROISelectedColor], Lines.Color[OverlapROISelectedColor], Lines.Color[SelectorSelectedColor], this.EnableOverlap, this.OverlapValue);
                 imageWidth = this.templateImage.OriginalImage.Width;
                 imageHeight = this.templateImage.OriginalImage.Height;
-                //Markers.canvasBoy.Width = width;
-                //Markers.canvasBoy.Height = height;
-                //this.DisplayBitmap = this.templateImage.GetBitmapImageSource(BitmapSelection.Original);
-
+                DisplayImage = TemplateImage.WorkingImage.ToBitmapSource();
             }
-                     
+
         }
-        public void CanvasClickRecalc()
+        /// <summary>
+        /// Used 
+        /// </summary>
+        public void Recalc()
         {
-             
-            if(this.point1.X != 0 && this.point1.Y != 0 && this.point2.X != 0 && this.point2.Y !=0)
+
+            if (this.point1.X != 0 && this.point1.Y != 0 && this.point2.X != 0 && this.point2.Y != 0)
             {
 
-                double distanceBetween = pythag(new Point(this.point1.X,this.point1.Y) ,
+                double distanceBetween = pythag(new Point(this.point1.X, this.point1.Y),
                     new Point(this.point2.X, this.point2.Y));
 
-                this.templateImage.PPI = distanceBetween/(this.SelectionLength * DetermineUnit());
-                this.CurrentPPI =(distanceBetween/(this.SelectionLength * DetermineUnit())).ToString();
+                this.templateImage.PPI = distanceBetween / (this.SelectionLength * DetermineUnit());
+                this.PPI = (distanceBetween / (this.SelectionLength * DetermineUnit())).ToString();
 
                 this.TemplateImage = this.TemplateImage;
                 Slice();
 
             }
         }
-
-        public double pythag(Point p1, Point p2)
-        {
-            double ydiff = Math.Abs(p1.Y - p2.Y);
-            double xdiff = Math.Abs(p1.X - p2.X);
-
-            return Math.Sqrt(Math.Pow(ydiff,2) + Math.Pow(xdiff,2));
-        }
-
-
         /// <summary>
         /// Essentially recalculates the image
         /// </summary>
         public void Slice()
         {
 
-            if( templateImage == null)
+            if (templateImage == null)
                 return;
 
-            templateImage.PPI = Double.Parse(this.CurrentPPI);
+            templateImage.PPI = Double.Parse(this.PPI);
             templateImage.RecalculateTemplate();
             templateImage.RedrawTemplate();
-            //this.DisplayBitmap = this.templateImage.GetBitmapImageSource(BitmapSelection.Working);
         }
 
         /// <summary>
@@ -421,44 +469,9 @@ namespace Subdivider.ViewModels
             {
                 var doc = templateImage.BuildPdfDoc();
                 doc.Save(sfd.FileName);
-                //this.DisplayBitmap = this.templateImage.GetBitmapImageSource(BitmapSelection.Working);
 
                 ShowPdf(sfd.FileName);
 
-            }
-        }
-
-
-        
-        public void ChangePaperSize()
-        {
-            if(this.templateImage != null)
-            {
-                this.templateImage.PaperSize = Papers.Sizes[SelectedPaperSize];
-                Slice();
-            }
-        }
-
-        public void ChangeColor()
-        {
-
-            if (this.templateImage != null)
-            {
-                this.templateImage.PageROIColor = Lines.Color[PageROISelectedColor];
-                this.templateImage.OverlapROIColor = Lines.Color[OverlapROISelectedColor];
-                this.templateImage.SelectorColor = Lines.Color[SelectorSelectedColor];
-            }
-        }
-
-        public double DetermineUnit()
-        {
-            if (this.isInches == true)
-            {
-                return 1;
-            }
-            else
-            {
-                return .393701;
             }
         }
 
@@ -514,6 +527,72 @@ namespace Subdivider.ViewModels
         }
 
 
+
+
+		#endregion Command Methods
+
+		#region Private Methods
+
+		private void ReprocessImageProcessing()
+		{
+            if(TemplateImage != null) 
+            { 
+                //reset image
+                TemplateImage.WorkingImage.Dispose();
+                TemplateImage.WorkingImage = TemplateImage.OriginalImage.Clone();
+
+				if (EnableCanny)
+				{
+                    TemplateImage.WorkingImage = ImageProcessing.ProcessCanny(
+                        TemplateImage.WorkingImage,
+                        CannyThresh,
+                        CannyThreshLinking);
+                    DisplayImage = TemplateImage.WorkingImage.ToBitmapSource();
+				}
+            }
+        }
+
+		private double pythag(Point p1, Point p2)
+        {
+            double ydiff = Math.Abs(p1.Y - p2.Y);
+            double xdiff = Math.Abs(p1.X - p2.X);
+
+            return Math.Sqrt(Math.Pow(ydiff,2) + Math.Pow(xdiff,2));
+        }
+
+
+        private void ChangePaperSize()
+        {
+            if(this.templateImage != null)
+            {
+                this.templateImage.PaperSize = Papers.Sizes[SelectedPaperSize];
+                Slice();
+            }
+        }
+
+        private void ChangeColor()
+        {
+
+            if (this.templateImage != null)
+            {
+                this.templateImage.PageROIColor = Lines.Color[PageROISelectedColor];
+                this.templateImage.OverlapROIColor = Lines.Color[OverlapROISelectedColor];
+                this.templateImage.SelectorColor = Lines.Color[SelectorSelectedColor];
+            }
+        }
+
+        private double DetermineUnit()
+        {
+            if (this.isInches == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return .393701;
+            }
+        }
+
         private void ShowPdf(string pdfpath) {
             if (enablePDFAutoOpen == true) {
                 var p = new Process();
@@ -524,8 +603,6 @@ namespace Subdivider.ViewModels
                 p.Start();
             };
         }
-
-
 
 
      #endregion

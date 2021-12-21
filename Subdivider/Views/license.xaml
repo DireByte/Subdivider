@@ -7,11 +7,11 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="Subdivider - Settings" Height="700" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Subdivider - Settings" Height="800" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <ScrollViewer>
 
         <TextBox x:Name="licenseText" Margin="20,20,20,20" 
-                 Padding="10,10,10,10"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                 Padding="10,10,10,10"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap">
         </TextBox>
 
 

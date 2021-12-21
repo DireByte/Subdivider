@@ -7,8 +7,8 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>logo.ico</ApplicationIcon>
 		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-		<AssemblyVersion>1.0.1.0</AssemblyVersion>
-		<FileVersion>1.0.1.0</FileVersion>
+		<AssemblyVersion>1.0.2.0</AssemblyVersion>
+		<FileVersion>1.0.2.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Themes\**" />
@@ -17,6 +17,7 @@
     <Page Remove="Themes\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\instructions.png" />
     <None Remove="Views\logo.png" />
     <None Remove="Views\logo_transparent.png" />
   </ItemGroup>
@@ -32,6 +33,7 @@
     <PackageReference Include="Wpf.Controls.PanAndZoom" Version="2.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\instructions.png" />
     <Resource Include="Views\logo.png" />
   </ItemGroup>
   <ItemGroup>

@@ -70,8 +70,19 @@
                 <ColumnDefinition Width="350" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-            <customcontrols:ImageViewControl
+			
+			<Image Grid.Column="1"
+				   Source="/Resources/instructions.png"
+				   Height="auto"
+				   MaxHeight="600"
+				   HorizontalAlignment="Center"
+				   VerticalAlignment="Center"
+				   Stretch="Uniform"
+				   StretchDirection="Both"
+				   Opacity="0.5" />
+			
+			<customcontrols:ImageViewControl
+				Background="Transparent"
                 Grid.Column="1"
                 OverlapROIColor="{Binding OverlapROIColor, Mode=TwoWay, NotifyOnSourceUpdated=True}"
                 OverlapRois="{Binding TemplateImage.OverlapRois, Mode=TwoWay}"

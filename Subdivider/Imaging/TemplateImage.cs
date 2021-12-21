@@ -182,19 +182,6 @@ namespace Subdivider.Imaginng
         }
 
         /// <summary>
-        /// Redraw template
-        /// </summary>
-        public void RedrawTemplate()
-        {
-            //draw ROIs
-            this.WorkingImage.Dispose();
-            this.WorkingImage = this.OriginalImage.Clone();
-            //DrawPrintPages(this.WorkingImage.Mat, pageROIS);
-            //if(enableRegistrations)
-            //  DrawRegistrationMarks(this.WorkingImage.Mat, pageROIS);
-        }
-
-        /// <summary>
         /// Calculate and set page ROIS based on without overlap
         /// </summary>
         /// <param name="ppi">Calculated PPI</param>

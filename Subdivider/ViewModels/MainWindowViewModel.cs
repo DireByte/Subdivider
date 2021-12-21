@@ -453,7 +453,6 @@ namespace Subdivider.ViewModels
 
             templateImage.PPI = Double.Parse(this.PPI);
             templateImage.RecalculateTemplate();
-            templateImage.RedrawTemplate();
         }
 
         /// <summary>
@@ -461,7 +460,13 @@ namespace Subdivider.ViewModels
         /// </summary>
         private void Export()
         {
-
+			if (this.TemplateImage == null) { 
+                return;
+            }
+            if (TemplateImage.PageRois == null)
+            {
+                return;
+            }
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "PDF Files | *.pdf";
 
@@ -538,17 +543,19 @@ namespace Subdivider.ViewModels
             if(TemplateImage != null) 
             { 
                 //reset image
-                TemplateImage.WorkingImage.Dispose();
                 TemplateImage.WorkingImage = TemplateImage.OriginalImage.Clone();
 
 				if (EnableCanny)
 				{
-                    TemplateImage.WorkingImage = ImageProcessing.ProcessCanny(
+                        var newImage = ImageProcessing.ProcessCanny(
                         TemplateImage.WorkingImage,
                         CannyThresh,
                         CannyThreshLinking);
-                    DisplayImage = TemplateImage.WorkingImage.ToBitmapSource();
+                    TemplateImage.WorkingImage = newImage;
+                   
 				}
+
+                DisplayImage = TemplateImage.WorkingImage.ToBitmapSource();
             }
         }
 

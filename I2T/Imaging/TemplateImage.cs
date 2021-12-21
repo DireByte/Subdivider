@@ -11,10 +11,10 @@ using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
 using System.Collections.ObjectModel;
 using System.Linq;
-using I2T.Struct;
-using I2T.CustomControls.UIElements;
+using Subdivider.Struct;
+using Subdivider.CustomControls.UIElements;
 
-namespace I2T.Imaginng
+namespace Subdivider.Imaginng
 {
     public enum DisplayImage
     {
@@ -213,8 +213,6 @@ namespace I2T.Imaginng
                 .Canny(100,100)
                 .ThresholdBinaryInv(new Gray(150),new Gray(255))
                 .Convert<Bgr,byte>();
-
-            image.ToBitmap().Save("test.bmp");
             return image;
 		}
 

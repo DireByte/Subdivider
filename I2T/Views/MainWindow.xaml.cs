@@ -8,7 +8,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Windows.Controls;
 
-namespace I2T.Views
+namespace Subdivider.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

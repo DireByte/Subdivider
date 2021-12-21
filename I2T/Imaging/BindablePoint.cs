@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace I2T.Imaginng
+namespace Subdivider.Imaginng
 {
 	/// <summary>
 	/// Point struct that can be bindable

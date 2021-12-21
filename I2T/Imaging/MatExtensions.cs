@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace I2T.Imaginng
+namespace Subdivider.Imaginng
 {
     public static class MatExtensions
     {

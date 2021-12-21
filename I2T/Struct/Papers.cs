@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace I2T.Struct
+namespace Subdivider.Struct
 {
     public struct PaperSize
     {

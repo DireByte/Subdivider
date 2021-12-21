@@ -1,8 +1,8 @@
-﻿using I2T.Views;
+﻿using Subdivider.Views;
 using Prism.Ioc;
 using System.Windows;
 
-namespace I2T
+namespace Subdivider
 {
     /// <summary>
     /// Interaction logic for App.xaml

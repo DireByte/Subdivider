@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace I2T.CustomControls.UIElements
+namespace Subdivider.CustomControls.UIElements
 {
     public struct LineColor: INotifyPropertyChanged
     {

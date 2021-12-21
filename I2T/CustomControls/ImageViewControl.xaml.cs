@@ -1,5 +1,5 @@
-﻿using I2T.CustomControls.UIElements;
-using I2T.Imaginng;
+﻿using Subdivider.CustomControls.UIElements;
+using Subdivider.Imaginng;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace I2T.CustomControls
+namespace Subdivider.CustomControls
 {
     public partial class ImageViewControl : UserControl
     {

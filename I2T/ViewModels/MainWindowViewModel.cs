@@ -1,8 +1,8 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using I2T.CustomControls.UIElements;
-using I2T.Imaginng;
-using I2T.Struct;
+using Subdivider.CustomControls.UIElements;
+using Subdivider.Imaginng;
+using Subdivider.Struct;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -19,14 +19,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace I2T.ViewModels
+namespace Subdivider.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
 
         #region private Properties
 
-        private string _title = "I2T";
+        private string _title = "Subdivider";
         private string _theme = "Light";
         private double selectionLength = 1.0;
         private string ppi = "300";

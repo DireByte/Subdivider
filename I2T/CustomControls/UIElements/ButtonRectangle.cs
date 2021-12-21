@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace I2T.CustomControls.UIElements
+namespace Subdivider.CustomControls.UIElements
 {
     class ButtonRectangle : Shape
     {

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace I2T.CustomControls.UIElements
+namespace Subdivider.CustomControls.UIElements
 {
     public class Crosshair : Grid
     {

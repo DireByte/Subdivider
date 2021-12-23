@@ -17,6 +17,7 @@
     <Page Remove="Themes\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\info.png" />
     <None Remove="Resources\instructions.png" />
     <None Remove="Views\logo.png" />
     <None Remove="Views\logo_transparent.png" />
@@ -33,6 +34,7 @@
     <PackageReference Include="Wpf.Controls.PanAndZoom" Version="2.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\info.png" />
     <Resource Include="Resources\instructions.png" />
     <Resource Include="Views\logo.png" />
   </ItemGroup>

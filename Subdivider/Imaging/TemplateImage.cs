@@ -299,8 +299,8 @@ namespace Subdivider.Imaginng
             if (overlap)
 			{
                 roisToUse = OverlapRois;
-                DrawPageRois(this.WorkingImage.Mat, PageRois);
                 image = this.WorkingImage.Clone();
+                DrawPageRois(image.Mat, PageRois);
             }
             else
                 roisToUse = PageRois;

@@ -74,12 +74,20 @@ namespace Subdivider.ViewModels
 
 
 
-        #endregion
+		#endregion
 
-        #region Public Properties
+		#region Public Properties
 
-        #region Theme
-        public string Title
+		#region
+        public string LinearDimentionToolTip => "Distance between the two selected points on the image.";
+        public string EnableOverlapToolTip => "Enables overlapping of page ROIs based on selected percentage. " +
+            "Cut lines will be added to the resulting pdf for simple alignment.";
+        public string EnablePageSelectionToolTip => "Enables the selection of specific pages and omission of the unselected.";
+
+		#endregion
+
+		#region Theme
+		public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }

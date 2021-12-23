@@ -23,8 +23,10 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
+
+	<Grid>
+		
+		<Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="47*" />
         </Grid.ColumnDefinitions>
@@ -141,7 +143,7 @@
                                                 Margin="0,10,0,0"
                                                 FontStyle="Normal"
                                                 FontWeight="Normal"
-                                                Header="Unit of Measurement">
+                                                Header="Scaling Settings">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
@@ -154,19 +156,27 @@
                                                         Orientation="Horizontal">
                                                         <RadioButton
                                                             HorizontalAlignment="Right"
-                                                            Content="Cenitimeter"/>
+                                                            Content="Centimeters"/>
                                                         <RadioButton
                                                             HorizontalAlignment="Left"
                                                             VerticalAlignment="Center"
                                                             Content="Inches"
 														    IsChecked="{Binding IsInches}" />
                                                     </StackPanel>
-                                                    <Label
-                                                        Grid.Row="1"
-                                                        Margin="0,0,0,15"
-                                                        FontSize="20">
-                                                        Input
-                                                    </Label>
+													<StackPanel Grid.Row="1"
+																Margin="5"
+																Orientation="Horizontal">
+														<Label Grid.Row="1"
+															   Margin="0,0,0,15"
+															   FontSize="20">
+															Linear Dimension
+														</Label>
+														<Image Margin="5,0,0,0"
+															   VerticalAlignment="Top"
+															   Source="/Resources/info.png"
+															   ToolTip="{Binding LinearDimentionToolTip}"></Image>
+													</StackPanel>
+													
                                                     <ui:NumberBox
                                                         Grid.Row="2"
                                                         Minimum=".001"
@@ -199,18 +209,29 @@
                                         X1="0"
                                         X2="250" />
                                             -->
-                                            <GroupBox Header="Overlap Settings">
-                                                <Grid>
+                                            <GroupBox>
+												<GroupBox.Header>
+													<StackPanel Orientation="Horizontal">
+														<Label Margin="0,0,0,15"
+															   FontSize="20">
+															Overlap Settings</Label>
+														<Image Margin="5,0,0,0"
+															   VerticalAlignment="Top"
+															   Source="/Resources/info.png"
+															   ToolTip="{Binding EnableOverlapToolTip}"></Image>
+													</StackPanel>
+												</GroupBox.Header>
+												<Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
                                                         <RowDefinition MinHeight="30" />
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
-                                                    <CheckBox
-                                                        Grid.Row="0"
-                                                        Content="Enable Overlap (%)"
+													<CheckBox Grid.Row="0"
+																  Content="Enable Overlap (%)"
                                                         IsChecked="{Binding EnableOverlap}" />
-                                                    <Label
+												
+													<Label
                                                         Grid.Row="1"
                                                         HorizontalAlignment="Center"
                                                         Content="{Binding OverlapValue}" />
@@ -223,7 +244,19 @@
                                                         Value="{Binding OverlapValue}" />
                                                 </Grid>
                                             </GroupBox>
-                                            <GroupBox Header="Enable Page Selection">
+                                            <GroupBox>
+												<GroupBox.Header>
+													<StackPanel
+														Orientation="Horizontal">
+														<Label Margin="0,0,0,15"
+															   FontSize="20">
+															Enable Page Selection</Label>
+														<Image Margin="5,0,0,0"
+															   VerticalAlignment="Top"
+															   Source="/Resources/info.png"
+															   ToolTip="{Binding EnablePageSelectionToolTip}"></Image>
+													</StackPanel>
+												</GroupBox.Header>
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />

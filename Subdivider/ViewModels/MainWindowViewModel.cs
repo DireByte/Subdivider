@@ -83,6 +83,8 @@ namespace Subdivider.ViewModels
         public string EnableOverlapToolTip => "Enables overlapping of page ROIs based on selected percentage. " +
             "Cut lines will be added to the resulting pdf for simple alignment.";
         public string EnablePageSelectionToolTip => "Enables the selection of specific pages and omission of the unselected.";
+        public string CannyEdgesToolTip => "Binarizes the images and detects edges based on the Binarization Threshold and Edge Linking Threshold.  " +
+            "This is very useful when attempting to get a rough outline of an object and would like to save ink.";
 
 		#endregion
 

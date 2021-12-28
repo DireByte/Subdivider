@@ -295,7 +295,18 @@
 													<Grid.RowDefinitions>
 														<RowDefinition />
 													</Grid.RowDefinitions>
-													<GroupBox Header="Canny Edges (Beta)">
+													<GroupBox>
+														<GroupBox.Header>
+															<StackPanel Orientation="Horizontal">
+																<Label Margin="0,0,0,15"
+																	   FontSize="20">
+																	Canny Edges (Beta)</Label>
+																<Image Margin="5,0,0,0"
+																	   VerticalAlignment="Top"
+																	   Source="/Resources/info.png"
+																	   ToolTip="{Binding CannyEdgesToolTip}"></Image>
+															</StackPanel>
+														</GroupBox.Header>
 														<Grid>
 															<Grid.RowDefinitions>
 															<RowDefinition></RowDefinition>
@@ -312,7 +323,7 @@
 														    <CheckBox Grid.Row="1"
 																  Content="Enable Edges"
 																  IsChecked="{Binding EnableCanny}" />
-															<Label Grid.Row="2" Content="Thresh"></Label>
+															<Label Grid.Row="2" Content="Binarization Threshold"></Label>
 															<Slider Grid.Row="3"
 																	AutoToolTipPlacement="TopLeft"
 																    IsEnabled="{Binding EnableCanny}"
@@ -321,7 +332,7 @@
 																	Maximum="255"
 																	SmallChange="0"
 																	Value="{Binding CannyThresh}" />
-															<Label Grid.Row="4" Content="LinkThresh"></Label>
+															<Label Grid.Row="4" Content="Edge Linking Threshold"></Label>
 															<Slider Grid.Row="5"
 																	AutoToolTipPlacement="TopLeft"
 															    	IsEnabled="{Binding EnableCanny}"

@@ -270,11 +270,13 @@ namespace Subdivider.CustomControls
 
         public void ResetImageZoomAndLocation()
 		{
+            if(DisplayImage != null) { 
             zoomBoi.Reset();
             var zoomRatioHeight = zoomBoi.ActualHeight / DisplayImage.Height;
             var zoomRatioWidth = zoomBoi.ActualWidth / DisplayImage.Width;
             var zoomRatio = zoomRatioHeight > zoomRatioWidth ? zoomRatioWidth : zoomRatioHeight;
             zoomBoi.ZoomTo(zoomRatio, 0, 0);
+            }
         }
 
         public void ResetCanvas(double imageWidth, double imageHeight) //clears canvas

@@ -72,10 +72,11 @@
         <Button Grid.Column="1"
                 Grid.Row="1"
                 Content="Reset Image"
-                VerticalAlignment="Bottom"
                 BorderBrush="White"
                 BorderThickness="2"
-                Margin="17,0,0,6"
+				Margin="5,5,5,5"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
                 Click="ResetButton_Click" />
 
     </Grid>

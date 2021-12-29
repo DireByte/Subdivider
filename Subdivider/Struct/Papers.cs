@@ -21,7 +21,8 @@ namespace Subdivider.Struct
         {
             {"USLetter", new PaperSize(8.5,11) },
             {"USLegal", new PaperSize(11,17) },
-            {"A5", new PaperSize(5.875,8.25) }
+            {"A5", new PaperSize(5.875,8.25) },
+            {"A4", new PaperSize(8.25,11.75) }
         };
     }
 }

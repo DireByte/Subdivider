@@ -44,6 +44,7 @@ namespace Subdivider.CustomControls
                 imageDisplay.Source = value; 
                 UpdatePageCanvas();
                 ResetCanvas(value.Width, value.Height);
+                ResetImageZoomAndLocation();
             }
         }
         private static void DisplayImageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs arg)  //Updates TemplateImage on property changed
@@ -260,12 +261,22 @@ namespace Subdivider.CustomControls
         }
         private void ResetButton_Click(object sender, RoutedEventArgs e) //resets zoom panel
         {
-            zoomBoi.Reset();
+            ResetImageZoomAndLocation();  
         }
 
         #endregion
 
         #region Supporting Methods
+
+        public void ResetImageZoomAndLocation()
+		{
+            zoomBoi.Reset();
+            var zoomRatioHeight = zoomBoi.ActualHeight / DisplayImage.Height;
+            var zoomRatioWidth = zoomBoi.ActualWidth / DisplayImage.Width;
+            var zoomRatio = zoomRatioHeight > zoomRatioWidth ? zoomRatioWidth : zoomRatioHeight;
+            zoomBoi.ZoomTo(zoomRatio, 0, 0);
+        }
+
         public void ResetCanvas(double imageWidth, double imageHeight) //clears canvas
         {
 

@@ -429,6 +429,7 @@ namespace Subdivider.ViewModels
                 imageWidth = this.templateImage.OriginalImage.Width;
                 imageHeight = this.templateImage.OriginalImage.Height;
                 DisplayImage = TemplateImage.WorkingImage.ToBitmapSource();
+                ReprocessImageProcessing();
             }
 
         }

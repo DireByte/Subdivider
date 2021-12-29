@@ -96,6 +96,7 @@
                 SelectorColor="{Binding SelectorColor, Mode=Twoway, NotifyOnSourceUpdated=True}"
 	            DisplayImage="{Binding DisplayImage, Mode=TwoWay, NotifyOnSourceUpdated=True}" />
 
+			<!--#region  Controls Menu -->
             <Grid
                 x:Name="ControlsPanel"
                 Grid.Column="0"
@@ -131,53 +132,60 @@
 
                                     <Expander
                                         Name="ScaleSettings"
-                                        Padding="10"
+                                        Padding="5"
 								        Background="#435055"
                                         ExpandDirection="Down"
-                                        FontSize="16"
+                                        FontSize="28"
+										FontWeight="SemiBold"
                                         Header="Scale Settings"
                                         IsExpanded="True">
 
                                         <StackPanel>
-                                            <GroupBox
-                                                Margin="0,10,0,0"
-                                                FontStyle="Normal"
-                                                FontWeight="Normal"
-                                                Header="Scaling Settings">
-                                                <Grid>
+											<GroupBox>
+												<GroupBox.Header>
+													<StackPanel>
+														<Label FontSize="20"
+															   FontWeight="Normal"
+															   FontStyle="Normal">
+															Point Selection Dimension</Label>
+														<Separator />
+													</StackPanel>
+												</GroupBox.Header>
+
+												<Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
                                                         <RowDefinition />
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
-                                                    <StackPanel
-                                                        Grid.Row="0"
-                                                        Margin="5"
-                                                        Orientation="Horizontal">
-                                                        <RadioButton
-                                                            HorizontalAlignment="Right"
-                                                            Content="Centimeters"/>
-                                                        <RadioButton
-                                                            HorizontalAlignment="Left"
-                                                            VerticalAlignment="Center"
-                                                            Content="Inches"
-														    IsChecked="{Binding IsInches}" />
-                                                    </StackPanel>
-													<StackPanel Grid.Row="1"
-																Margin="5"
-																Orientation="Horizontal">
+													<StackPanel Grid.Row="0"
+																Orientation="Horizontal"
+																>
 														<Label Grid.Row="1"
-															   Margin="0,0,0,15"
-															   FontSize="20">
+															   FontStyle="Normal"
+															   FontWeight="Normal"
+															   FontSize="18">
 															Linear Dimension
 														</Label>
-														<Image Margin="5,0,0,0"
+														<Image Margin="5,3,0,0"
 															   VerticalAlignment="Top"
 															   Source="/Resources/info.png"
 															   ToolTip="{Binding LinearDimentionToolTip}"></Image>
 													</StackPanel>
-													
-                                                    <ui:NumberBox
+													<StackPanel Grid.Row="1"
+																Margin="0"
+																Orientation="Horizontal">
+														<RadioButton HorizontalAlignment="Right"
+																	 FontWeight="Normal"
+																	 Content="Centimeters" />
+														<RadioButton FontWeight="Normal"
+																	 HorizontalAlignment="Left"
+																	 VerticalAlignment="Center"
+																	 Content="Inches"
+																	 IsChecked="{Binding IsInches}" />
+													</StackPanel>
+
+													<ui:NumberBox
                                                         Grid.Row="2"
                                                         Minimum=".001"
                                                         SpinButtonPlacementMode="Inline"
@@ -188,8 +196,17 @@
                                             </GroupBox>
 
 
-                                            <GroupBox Header="Paper Size Selection">
-                                                <Grid>
+                                            <GroupBox>
+												<GroupBox.Header>
+													<StackPanel>
+														<Label FontSize="20"
+															   FontWeight="Normal"
+															   FontStyle="Normal">
+														    Paper Size Selection</Label>
+														<Separator />
+													</StackPanel>
+												</GroupBox.Header>
+												<Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
@@ -211,61 +228,55 @@
                                             -->
                                             <GroupBox>
 												<GroupBox.Header>
-													<StackPanel Orientation="Horizontal">
-														<Label Margin="0,0,0,15"
-															   FontSize="20">
+													<StackPanel>
+														<StackPanel Orientation="Horizontal">
+														<Label FontSize="20"
+															   FontWeight="Normal"
+															   FontStyle="Normal">
 															Overlap Settings</Label>
-														<Image Margin="5,0,0,0"
+														<Image Margin="5,4,0,0"
 															   VerticalAlignment="Top"
 															   Source="/Resources/info.png"
 															   ToolTip="{Binding EnableOverlapToolTip}"></Image>
-													</StackPanel>
-												</GroupBox.Header>
+													    </StackPanel>
+														<Separator></Separator>
+										            </StackPanel>
+										</GroupBox.Header>
 												<Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
-                                                        <RowDefinition MinHeight="30" />
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
-													<CheckBox Grid.Row="0"
-																  Content="Enable Overlap (%)"
+													<CheckBox 
+														Grid.Row="0"
+														Content="Enable Overlap (%)"
+														FontWeight="Normal"
                                                         IsChecked="{Binding EnableOverlap}" />
-												
-													<Label
-                                                        Grid.Row="1"
-                                                        HorizontalAlignment="Center"
-                                                        Content="{Binding OverlapValue}" />
-                                                    <Slider
-                                                        Grid.Row="2"
+												    <Slider 
+														AutoToolTipPlacement="TopLeft"
+														Grid.Row="2"
                                                         IsEnabled="{Binding EnableOverlap}"
                                                         LargeChange="5"
                                                         Maximum="25"
                                                         SmallChange="0"
-                                                        Value="{Binding OverlapValue}" />
+                                                        Value="{Binding OverlapValue}"
+															Height="32"
+															VerticalAlignment="Bottom" />
                                                 </Grid>
                                             </GroupBox>
-                                            <GroupBox>
-												<GroupBox.Header>
-													<StackPanel
-														Orientation="Horizontal">
-														<Label Margin="0,0,0,15"
-															   FontSize="20">
-															Enable Page Selection</Label>
-														<Image Margin="5,0,0,0"
-															   VerticalAlignment="Top"
-															   Source="/Resources/info.png"
-															   ToolTip="{Binding EnablePageSelectionToolTip}"></Image>
-													</StackPanel>
-												</GroupBox.Header>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition />
-                                                    </Grid.RowDefinitions>
-
-													<CheckBox IsChecked="{Binding EnablePageSelection}" />
-                                                </Grid>
-                                            </GroupBox>
-                                        </StackPanel>
+											<StackPanel
+												Orientation="Horizontal">
+													<CheckBox 
+														Content="Enable Page Selection"
+													    FontWeight="Normal"
+														IsChecked="{Binding EnablePageSelection}" 
+														/>
+													<Image Margin="5,4,0,0"
+														   VerticalAlignment="Top"
+														   Source="/Resources/info.png"
+														   ToolTip="{Binding EnablePageSelectionToolTip}"></Image>
+											</StackPanel>
+										</StackPanel>
 
                                     </Expander>
 
@@ -281,32 +292,35 @@
 
 									<Expander
 										Name="ImageProcessing"
-										Padding="10"
+										Padding="5"
                                         Background="#27323A"
                                         ExpandDirection="Down"
-                                        FontSize="16"
+										FontWeight="SemiBold"
+                                        FontSize="28"
                                         Header="Image Processing"
                                         IsExpanded="True">
 
 										<StackPanel>
-											<GroupBox
-												Header="Color Filters">
-												<Grid>
+										    <Grid>
 													<Grid.RowDefinitions>
 														<RowDefinition />
 													</Grid.RowDefinitions>
 													<GroupBox>
-														<GroupBox.Header>
+													<GroupBox.Header>
+														<StackPanel>
 															<StackPanel Orientation="Horizontal">
-																<Label Margin="0,0,0,15"
-																	   FontSize="20">
-																	Canny Edges (Beta)</Label>
-																<Image Margin="5,0,0,0"
-																	   VerticalAlignment="Top"
-																	   Source="/Resources/info.png"
-																	   ToolTip="{Binding CannyEdgesToolTip}"></Image>
-															</StackPanel>
-														</GroupBox.Header>
+															<Label FontSize="20"
+																   FontWeight="Normal"
+																   FontStyle="Normal">
+																Canny Edges (Beta)</Label>
+															<Image Margin="5,4,0,0"
+																   VerticalAlignment="Top"
+																   Source="/Resources/info.png"
+																   ToolTip="{Binding CannyEdgesToolTip}"></Image>
+														</StackPanel>
+															<Separator></Separator>
+														</StackPanel>
+													</GroupBox.Header>
 														<Grid>
 															<Grid.RowDefinitions>
 															<RowDefinition></RowDefinition>
@@ -319,9 +333,12 @@
 															<TextBlock Grid.Row="0" 
 																	   TextWrapping="Wrap" 
 																	   Margin="0,0,0,5"
+																	   FontSize="14"
+																	   FontWeight="Normal"
 																	   Text="Edge detection may be slow based on image size and hardware."></TextBlock>
 														    <CheckBox Grid.Row="1"
 																  Content="Enable Edges"
+																  FontWeight="Normal"
 																  IsChecked="{Binding EnableCanny}" />
 															<Label Grid.Row="2" Content="Binarization Threshold"></Label>
 															<Slider Grid.Row="3"
@@ -343,27 +360,24 @@
 																	Value="{Binding CannyThreshLinking}" />
 														</Grid>
 													</GroupBox>
-													
-
 												</Grid>
-
-											</GroupBox>
 										</StackPanel>
 									
 									</Expander>
 									
                                     <Expander
                                         Name="ColorSettings"
-                                        Padding="10"
                                         Background="#435055"
+										Padding="5"
                                         ExpandDirection="Down"
-                                        FontSize="16"
+                                        FontSize="28"
+										FontWeight="SemiBold"
                                         Header="Color Settings"
-                                        IsExpanded="false">
+                                        >
 
                                         <StackPanel>
 
-                                            <GroupBox Header="Selection Tool Color">
+                                            <GroupBox Header="Selection Tool Color" FontWeight="Normal">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
@@ -376,7 +390,7 @@
                                                 </Grid>
                                             </GroupBox>
 
-                                            <GroupBox Header="Page ROI Color">
+                                            <GroupBox Header="Page ROI Color" FontWeight="Normal">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
@@ -431,6 +445,7 @@
                     </Grid>
                 </GroupBox>
             </Grid>
+			<!--#endregion Controls Menu-->
         </Grid>
     </Grid>
 </Window>

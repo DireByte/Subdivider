@@ -75,8 +75,6 @@
 			
 			<Image Grid.Column="1"
 				   Source="/Resources/instructions.png"
-				   Height="auto"
-				   MaxHeight="600"
 				   HorizontalAlignment="Center"
 				   VerticalAlignment="Center"
 				   Stretch="Uniform"

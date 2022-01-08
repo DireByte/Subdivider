@@ -14,7 +14,7 @@ using System.Linq;
 using Subdivider.Struct;
 using Subdivider.CustomControls.UIElements;
 
-namespace Subdivider.Imaginng
+namespace Subdivider.Imaging
 {
     public enum DisplayImage
     {
@@ -164,91 +164,7 @@ namespace Subdivider.Imaginng
 
         #region Public Methods
 
-        /// <summary>
-        /// Recalculates the template rois and overlaps
-        /// </summary>
-        public void RecalculateTemplate()
-        {
-
-			if (Overlap)
-			{
-                (PageRois, OverlapRois) = CreatePageAndOverlapROIs(PPI, OverlapPercentage);
-			}
-			else
-			{
-                PageRois = CreatePageROIs(this.PPI);
-                OverlapRois = null;
-			}
-        }
-
-        /// <summary>
-        /// Calculate and set page ROIS based on without overlap
-        /// </summary>
-        /// <param name="ppi">Calculated PPI</param>
-        /// <returns>Calculated page rois</returns>
-        public ObservableCollection<System.Drawing.Rectangle> CreatePageROIs(double ppi)
-        {
-            //Create Page ROIS
-            int xposition = 0;
-            int yposition = 0;
-            Image<Bgr, byte> ImageToCalcRoisWith = this.WorkingImage;
-
-           ObservableCollection<System.Drawing.Rectangle> rois = new ObservableCollection<System.Drawing.Rectangle>();
-
-            while(yposition <= ImageToCalcRoisWith.Rows)
-            {
-                while(xposition <= ImageToCalcRoisWith.Cols)
-                {
-                    System.Drawing.Rectangle roi = new System.Drawing.Rectangle(new System.Drawing.Point(xposition,yposition), new System.Drawing.Size((int)(this.PaperSize.Width * this.PPI), (int)(this.PaperSize.Height * this.PPI)));
-                    rois.Add(roi);
-                    xposition = xposition += (int)(this.PaperSize.Width * this.PPI);
-                }
-                yposition = yposition += (int)(this.PaperSize.Height * this.PPI);
-                xposition = 0; 
-            }
-           return rois;
-        }
-
-        /// <summary>
-        /// Calculate and set page rois with overlap
-        /// </summary>
-        /// <param name="ppi">calculated PPI</param>
-        /// <param name="overlapPercentage">Overlap Percentage</param>
-        /// <returns>calculated page rois and overlap rois</returns>
-        public (ObservableCollection<System.Drawing.Rectangle>, ObservableCollection<System.Drawing.Rectangle>) CreatePageAndOverlapROIs(double ppi, double overlapPercentage)
-        {
-            //Create Page ROIS
-            int width = (int)(this.PaperSize.Width * this.PPI);
-            int height = (int)(this.PaperSize.Height * this.PPI);
-
-            int overLapModifier = (int)(width * overlapPercentage);
-            int xposition = 0 - overLapModifier/2;
-            int yposition = 0 - overLapModifier/2;
-
-            Image<Bgr, byte> ImageToCalcRoisWith = this.WorkingImage;
-
-            ObservableCollection<System.Drawing.Rectangle> pageRois = new ObservableCollection<System.Drawing.Rectangle>();
-            ObservableCollection<System.Drawing.Rectangle> overlapRois = new ObservableCollection<System.Drawing.Rectangle>();
-
-            while (yposition <= ImageToCalcRoisWith.Rows)
-            {
-                while (xposition <= ImageToCalcRoisWith.Cols)
-                {
-                    System.Drawing.Rectangle overlapRoi = new System.Drawing.Rectangle(new System.Drawing.Point(xposition, yposition), new System.Drawing.Size(width, height));
-                    System.Drawing.Rectangle pageRoi = new System.Drawing.Rectangle(new System.Drawing.Point(xposition + overLapModifier/2, yposition + overLapModifier/2), new System.Drawing.Size(width-overLapModifier, height-overLapModifier));
-                    overlapRois.Add(overlapRoi);
-                    pageRois.Add(pageRoi);
-                    xposition = xposition += (int)(this.PaperSize.Width * this.PPI) - overLapModifier;
-                }
-                yposition = yposition += (int)(this.PaperSize.Height * this.PPI) - overLapModifier;
-                xposition = 0 - overLapModifier/2;
-            }
-
-
-            return (pageRois, overlapRois);
-        }
-
-
+       
         /// <summary>
         /// Draw page rois on image for PDF
         /// </summary>

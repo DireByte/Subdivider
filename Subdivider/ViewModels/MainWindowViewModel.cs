@@ -19,6 +19,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Subdivider.Imaging;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Subdivider.ViewModels
 {
@@ -64,7 +66,6 @@ namespace Subdivider.ViewModels
 
         // App Functionality
         private bool enablePDFAutoOpen = true;
-        
 		#endregion Settings
 
 		private TemplateImage templateImage;
@@ -72,7 +73,10 @@ namespace Subdivider.ViewModels
         public static double imageWidth;
         public static double imageHeight;
 
-
+        private Task recalculationTask;
+        private CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        private CancellationToken cancelToken;
+        private bool recalculateEnabled = true;
 
 		#endregion
 
@@ -355,6 +359,14 @@ namespace Subdivider.ViewModels
 
         #endregion Settings 
 
+        public bool RecalculateEnabled
+		{
+			get { return this.recalculateEnabled;}
+			set
+			{
+                SetProperty(ref this.recalculateEnabled, value);
+			}
+        }
 
         public TemplateImage TemplateImage
         {
@@ -379,6 +391,7 @@ namespace Subdivider.ViewModels
         public DelegateCommand SliceImageCommand { get; private set;}
         public DelegateCommand ExportImageCommand { get; private set; }
         public DelegateCommand Recalculate { get; private set;}
+        public DelegateCommand CancelRecalculate { get; private set;}
         public DelegateCommand ThemeSwitchCommand { get; private set; }
         public DelegateCommand LicenseCommand { get; private set; }
 
@@ -398,7 +411,8 @@ namespace Subdivider.ViewModels
             Colors= new ObservableCollection<string>(Lines.Color.Keys);
             OpenImageCommand = new DelegateCommand(LoadImage);
             ExportImageCommand = new DelegateCommand(Export);
-            Recalculate = new DelegateCommand(Recalc);
+            Recalculate = new DelegateCommand(StartRecalc);
+            CancelRecalculate = new DelegateCommand(CancelRecalcTask);
             ThemeSwitchCommand = new DelegateCommand(ThemeSwap);
             LicenseCommand = new DelegateCommand(LicenseDisplay);
             HelpCommand = new DelegateCommand(HelpDisplay);
@@ -436,34 +450,63 @@ namespace Subdivider.ViewModels
         /// <summary>
         /// Used 
         /// </summary>
-        public void Recalc()
+        public void StartRecalc()
         {
+            double unit = DetermineUnit();
+            RecalculateEnabled = false;
+            
+            this.recalculationTask = Task.Factory.StartNew(() =>{
+                this.recalculationTask = Task.Run(() => TemplateImage = RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit));
+                RecalculateEnabled = true;
+                });
 
-            if (this.point1.X != 0 && this.point1.Y != 0 && this.point2.X != 0 && this.point2.Y != 0)
-            {
-
-                double distanceBetween = pythag(new Point(this.point1.X, this.point1.Y),
-                    new Point(this.point2.X, this.point2.Y));
-
-                this.templateImage.PPI = distanceBetween / (this.SelectionLength * DetermineUnit());
-                this.PPI = (distanceBetween / (this.SelectionLength * DetermineUnit())).ToString();
-
-                this.TemplateImage = this.TemplateImage;
-                Slice();
-
-            }
         }
-        /// <summary>
-        /// Essentially recalculates the image
-        /// </summary>
-        public void Slice()
-        {
 
-            if (templateImage == null)
-                return;
+        public void CancelRecalcTask()
+		{
+            RecalculateEnabled = true;
+		}
+     
+        private  TemplateImage RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
+		{
+            Task.Run(() => templateImage =
+            { 
+                if (point1.X != 0 && point1.Y != 0 && point2.X != 0 && point2.Y != 0)
+                {
 
-            templateImage.PPI = Double.Parse(this.PPI);
-            templateImage.RecalculateTemplate();
+                double distanceBetween = pythag(new Point(point1.X, point1.Y),
+                    new Point(point2.X, point2.Y));
+
+                templateImage.PPI = distanceBetween / (selectionLength * unit);
+                
+
+                if(templateImage != null)
+				{
+                    if (templateImage.Overlap)
+                    {
+                        (templateImage.PageRois, templateImage.OverlapRois) = 
+                            ImageProcessing.Opperation.CreatePageAndOverlapROIs(
+                                templateImage.WorkingImage,
+                                templateImage.PaperSize,
+                                templateImage.PPI,
+                                templateImage.OverlapPercentage);
+                    }
+                    else
+                    {
+                        templateImage.PageRois =  
+                            ImageProcessing.Opperation.CreatePageROIs(
+                                templateImage.WorkingImage, 
+                                templateImage.PaperSize, 
+                                templateImage.PPI);
+                        templateImage.OverlapRois = null;
+                    }
+                }
+             
+
+                }
+                return templateImage;
+            }
+            return templateImage;
         }
 
         /// <summary>
@@ -558,7 +601,7 @@ namespace Subdivider.ViewModels
 
 				if (EnableCanny)
 				{
-                        var newImage = ImageProcessing.ProcessCanny(
+                        var newImage = ImageProcessing.Alteration.ProcessCanny(
                         TemplateImage.WorkingImage,
                         CannyThresh,
                         CannyThreshLinking);
@@ -584,7 +627,6 @@ namespace Subdivider.ViewModels
             if(this.templateImage != null)
             {
                 this.templateImage.PaperSize = Papers.Sizes[SelectedPaperSize];
-                Slice();
             }
         }
 

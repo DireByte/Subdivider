@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Subdivider.CustomControls
 {
@@ -250,14 +251,28 @@ namespace Subdivider.CustomControls
         {
             Point1 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
             ClearMarkersAndLines();
-            UpdateMarkersAndLines();
+
+            double canvasWidth = canvasDisplay.Width;
+            double canvasHeight = canvasDisplay.Height;
+            LineColor selectorColor = SelectorColor;
+            PointB point1 = Point1;
+            PointB point2 = Point2;
+
+            Task.Run(() => { UpdateMarkersAndLines(canvasWidth, canvasHeight, selectorColor, point1, point2); });
         }
 
         private void canvasDisplay_MouseRightButtonDown(object sender, MouseButtonEventArgs e) //places a marker and updates visuals
         {
             Point2 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
             ClearMarkersAndLines();
-            UpdateMarkersAndLines();
+
+            double canvasWidth = canvasDisplay.Width;
+            double canvasHeight = canvasDisplay.Height;
+            LineColor selectorColor = SelectorColor;
+            PointB point1 = Point1;
+            PointB point2 = Point2;
+
+            Task.Run(() => { UpdateMarkersAndLines(canvasWidth, canvasHeight, selectorColor, point1, point2); });
         }
         private void ResetButton_Click(object sender, RoutedEventArgs e) //resets zoom panel
         {
@@ -301,8 +316,19 @@ namespace Subdivider.CustomControls
         public void ReDrawAll() //redraws all visuals
 		{
             canvasDisplay.Children.Clear();
-            UpdateMarkersAndLines();
-            DrawPageRois();
+
+            double canvasWidth = canvasDisplay.Width;
+            double canvasHeight = canvasDisplay.Height;
+            LineColor  selectorColor = SelectorColor;
+            PointB point1 = Point1;
+            PointB point2 = Point2;
+            ObservableCollection<System.Drawing.Rectangle> pageROIS = PageRois;
+            LineColor pageROIsColor = PageROIColor;
+            LineColor overlapROIsColor = OverlapROIColor;
+            ObservableCollection<System.Drawing.Rectangle> overlapROIS = OverlapRois;
+
+            Task.Run(() => { UpdateMarkersAndLines(canvasWidth, canvasHeight, selectorColor, point1, point2); });
+            Task.Run(() => { DrawPageRois(pageROIS, pageROIsColor, overlapROIS, overlapROIsColor); });
             UpdatePageCanvas();
         }
 
@@ -331,38 +357,44 @@ namespace Subdivider.CustomControls
 			}
 		}
             
-        public void UpdateMarkersAndLines() //redraws all lines and markers
+        public void UpdateMarkersAndLines(double canvasWidth, double canvasHeight, LineColor selectorColor, PointB pointB1, PointB pointB2) //redraws all lines and markers
         {
 
-            var lineWidth = (int)(canvasDisplay.Width + canvasDisplay.Height) / 2000;
+            var lineWidth = (int)(canvasWidth + canvasHeight) / 2000;
             if (lineWidth < 1)
                 lineWidth = 1;
 
-            SolidColorBrush brush = new SolidColorBrush(Color.FromRgb((byte)SelectorColor.Red, (byte)SelectorColor.Green, (byte)SelectorColor.Blue));
-            var color = Color.FromRgb((byte)SelectorColor.Red, (byte)SelectorColor.Green, (byte)SelectorColor.Blue);
-
-            if (Point1.X != 0 || Point1.Y != 0) //if point1 is not placed
+            if (pointB1.X != 0 || pointB1.Y != 0) //if point1 is not placed
 			{
-                var crosshairControl = Crosshair.DrawCrossHair(Point1.X, Point1.Y, color, lineWidth);
-                canvasDisplay.Children.Add(crosshairControl);
-                ClickMarkers.Add(crosshairControl);
 
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var color = Color.FromRgb((byte)selectorColor.Red, (byte)selectorColor.Green, (byte)selectorColor.Blue);
+                        var crosshairControl = Crosshair.DrawCrossHair(pointB1.X, pointB1.Y, color, lineWidth);
+                        canvasDisplay.Children.Add(crosshairControl);
+                        ClickMarkers.Add(crosshairControl);
+                    }), DispatcherPriority.Normal);
 			}
-            if (Point2.X != 0 || Point2.Y != 0) //if point2 is not placed
+            if (pointB2.X != 0 || pointB2.Y != 0) //if point2 is not placed
 			{
-                var crosshairControl = Crosshair.DrawCrossHair(Point2.X, Point2.Y, color, lineWidth);
-                canvasDisplay.Children.Add(crosshairControl);
-                ClickMarkers.Add(crosshairControl);
-			}
+
+                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var color = Color.FromRgb((byte)selectorColor.Red, (byte)selectorColor.Green, (byte)selectorColor.Blue);
+                    var crosshairControl = Crosshair.DrawCrossHair(pointB2.X, pointB2.Y, color, lineWidth);
+                    canvasDisplay.Children.Add(crosshairControl);
+                    ClickMarkers.Add(crosshairControl);
+                }), DispatcherPriority.Normal);
+            }
 
             //If points are set
-            if ((Point1.X != 0 || Point1.Y != 0) && (Point2.X != 0 || Point2.Y != 0))
+            if ((pointB1.X != 0 || pointB1.Y != 0) && (pointB2.X != 0 || pointB2.Y != 0))
             {
 
                 var point1 = new PointB();
                 var point2 = new PointB();
 
-                var hypot = (int)Math.Round(Math.Sqrt((Math.Pow(Math.Abs(Point1.X - Point2.X), 2) + Math.Pow(Math.Abs(Point1.Y - Point2.Y), 2))));
+                var hypot = (int)Math.Round(Math.Sqrt((Math.Pow(Math.Abs(pointB1.X - pointB2.X), 2) + Math.Pow(Math.Abs(pointB1.Y - pointB2.Y), 2))));
 
                 double percent = .9;
 
@@ -378,64 +410,78 @@ namespace Subdivider.CustomControls
                     percent = .99;
                 }
 
-                point1.X = (int)(Point2.X + ((1 - percent) * (Point1.X - Point2.X)));
-                point1.Y = (int)(Point2.Y + ((1 - percent) * (Point1.Y - Point2.Y)));
+                point1.X = (int)(pointB2.X + ((1 - percent) * (pointB1.X - pointB2.X)));
+                point1.Y = (int)(pointB2.Y + ((1 - percent) * (pointB1.Y - pointB2.Y)));
 
-                point2.X = (int)(Point2.X + (percent * (Point1.X - Point2.X)));
-                point2.Y = (int)(Point2.Y + (percent * (Point1.Y - Point2.Y)));
+                point2.X = (int)(pointB2.X + (percent * (pointB1.X - pointB2.X)));
+                point2.Y = (int)(pointB2.Y + (percent * (pointB1.Y - pointB2.Y)));
 
-                Line line = new Line() //draw line
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    X1 = point1.X,
-                    X2 = point2.X,
-                    Y1 = point1.Y,
-                    Y2 = point2.Y,
-                    StrokeThickness = lineWidth,
-                    Stroke = brush 
-                };
+                    SolidColorBrush brush = new SolidColorBrush(Color.FromRgb((byte)selectorColor.Red, (byte)selectorColor.Green, (byte)selectorColor.Blue));
 
-                ClickMarkers.Add(line);
-                canvasDisplay.Children.Add(line);
+                    var line = new Line() //draw line
+                    {
+                        X1 = point1.X,
+                        X2 = point2.X,
+                        Y1 = point1.Y,
+                        Y2 = point2.Y,
+                        StrokeThickness = lineWidth,
+                        Stroke = brush
+                    };
+                    ClickMarkers.Add(line);
+                    canvasDisplay.Children.Add(line);
+                }), DispatcherPriority.Normal);
             }
         }
 
-        public void DrawPageRois() //redraws all display rois on the image
+        public void DrawPageRois(ObservableCollection<System.Drawing.Rectangle> pageROIs,
+            LineColor pageROIColor, 
+            ObservableCollection<System.Drawing.Rectangle> overlapROIs,
+            LineColor overlapROIColor) //redraws all display rois on the image
 		{
-            if(PageRois != null) 
+            if(pageROIs != null) 
             { 
-                foreach(System.Drawing.Rectangle roi in PageRois)
+                foreach(System.Drawing.Rectangle roi in pageROIs)
 			    {
-                
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+
                     var rectShape = new Rectangle()
 				    {
                         Width = roi.Width,
                         Height= roi.Height,
 				    };
 
-                    SolidColorBrush pageROIBrush = new SolidColorBrush(Color.FromRgb((byte)PageROIColor.Red, (byte)PageROIColor.Green, (byte)PageROIColor.Blue));
+                    SolidColorBrush pageROIBrush = new SolidColorBrush(Color.FromRgb((byte)pageROIColor.Red, (byte)pageROIColor.Green, (byte)pageROIColor.Blue));
                     rectShape.Stroke  = pageROIBrush;
                     canvasDisplay.Children.Add(rectShape);
                     Canvas.SetLeft(rectShape,Convert.ToDouble(roi.X));
                     Canvas.SetTop(rectShape, Convert.ToDouble(roi.Y));
+                    }), DispatcherPriority.Normal);
                 }
 			}
 
-            if(OverlapRois != null)
+            if(overlapROIs != null)
 			{
-                foreach (System.Drawing.Rectangle roi in OverlapRois)
+                foreach (System.Drawing.Rectangle roi in overlapROIs)
                 {
 
-                    var rectShape = new Rectangle()
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var rectShape = new Rectangle()
                     {
                         Width = roi.Width,
                         Height = roi.Height,
                     };
 
-                    SolidColorBrush overlapROIBrush = new SolidColorBrush(Color.FromRgb((byte)OverlapROIColor.Red, (byte)OverlapROIColor.Green, (byte)OverlapROIColor.Blue));
+                    SolidColorBrush overlapROIBrush = new SolidColorBrush(Color.FromRgb((byte)overlapROIColor.Red, (byte)overlapROIColor.Green, (byte)overlapROIColor.Blue));
                     rectShape.Stroke = overlapROIBrush;
                     canvasDisplay.Children.Add(rectShape);
                     Canvas.SetLeft(rectShape, Convert.ToDouble(roi.X));
                     Canvas.SetTop(rectShape, Convert.ToDouble(roi.Y));
+                    
+                    }), DispatcherPriority.Normal);
                 }
 
             }

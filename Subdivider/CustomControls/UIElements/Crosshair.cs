@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Subdivider.CustomControls.UIElements
 {
@@ -39,11 +41,13 @@ namespace Subdivider.CustomControls.UIElements
             line4.Y1 = y - 2;
             line4.X2 = x;
             line4.Y2 = y - 10;
-
-            crosshair.Children.Add(line1);
-            crosshair.Children.Add(line2);
-            crosshair.Children.Add(line3);
-            crosshair.Children.Add(line4);
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                crosshair.Children.Add(line1);
+                crosshair.Children.Add(line2);
+                crosshair.Children.Add(line3);
+                crosshair.Children.Add(line4);
+            }), DispatcherPriority.Normal);
 
             return crosshair;
         }

@@ -456,8 +456,7 @@ namespace Subdivider.ViewModels
             RecalculateEnabled = false;
             
             this.recalculationTask = Task.Factory.StartNew(() =>{
-                this.recalculationTask = Task.Run(() => TemplateImage = RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit));
-                RecalculateEnabled = true;
+                this.recalculationTask = Task.Run(() => this.RecalculateEnabled = RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit));
                 });
 
         }
@@ -467,10 +466,8 @@ namespace Subdivider.ViewModels
             RecalculateEnabled = true;
 		}
      
-        private  TemplateImage RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
+        private bool RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
 		{
-            Task.Run(() => templateImage =
-            { 
                 if (point1.X != 0 && point1.Y != 0 && point2.X != 0 && point2.Y != 0)
                 {
 
@@ -490,6 +487,7 @@ namespace Subdivider.ViewModels
                                 templateImage.PaperSize,
                                 templateImage.PPI,
                                 templateImage.OverlapPercentage);
+                        return true;
                     }
                     else
                     {
@@ -498,15 +496,12 @@ namespace Subdivider.ViewModels
                                 templateImage.WorkingImage, 
                                 templateImage.PaperSize, 
                                 templateImage.PPI);
-                        templateImage.OverlapRois = null;
+                                templateImage.OverlapRois = null;
+                        return true;
                     }
                 }
-             
-
-                }
-                return templateImage;
-            }
-            return templateImage;
+            }   
+                return false;
         }
 
         /// <summary>

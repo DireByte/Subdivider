@@ -50,6 +50,7 @@ namespace Subdivider.ViewModels
         private PointB point1;
         private PointB point2;
 
+        
         //Color Settings
         private ObservableCollection<string> colors;
         private string pageROISelectedColor = "Red";
@@ -386,7 +387,6 @@ namespace Subdivider.ViewModels
         #endregion
 
         #region Commands
-
         public DelegateCommand OpenImageCommand { get; private set;}
         public DelegateCommand SliceImageCommand { get; private set;}
         public DelegateCommand ExportImageCommand { get; private set; }
@@ -394,10 +394,8 @@ namespace Subdivider.ViewModels
         public DelegateCommand CancelRecalculate { get; private set;}
         public DelegateCommand ThemeSwitchCommand { get; private set; }
         public DelegateCommand LicenseCommand { get; private set; }
-
         public DelegateCommand PDFCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
-
         public DelegateCommand CoffeeCommand { get; private set; }
         public DelegateCommand WebsiteCommand { get; private set; }
         public DelegateCommand UnitCommand { get; private set; }
@@ -455,11 +453,11 @@ namespace Subdivider.ViewModels
             double unit = DetermineUnit();
             RecalculateEnabled = false;
             
-            this.recalculationTask = Task.Factory.StartNew(() =>{
+            this.recalculationTask = Task.Factory.StartNew(() =>
+            {
                 this.recalculationTask = Task.Run(() => TemplateImage = RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit));
                 RecalculateEnabled = true;
-                });
-
+            });
         }
 
         public void CancelRecalcTask()
@@ -469,17 +467,12 @@ namespace Subdivider.ViewModels
      
         private  TemplateImage RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
 		{
-            Task.Run(() => templateImage =
-            { 
-                if (point1.X != 0 && point1.Y != 0 && point2.X != 0 && point2.Y != 0)
-                {
 
                 double distanceBetween = pythag(new Point(point1.X, point1.Y),
                     new Point(point2.X, point2.Y));
 
                 templateImage.PPI = distanceBetween / (selectionLength * unit);
-                
-
+               
                 if(templateImage != null)
 				{
                     if (templateImage.Overlap)
@@ -501,11 +494,7 @@ namespace Subdivider.ViewModels
                         templateImage.OverlapRois = null;
                     }
                 }
-             
-
-                }
-                return templateImage;
-            }
+            
             return templateImage;
         }
 

@@ -19,6 +19,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Subdivider.Imaging;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Subdivider.ViewModels
 {
@@ -48,6 +50,7 @@ namespace Subdivider.ViewModels
         private PointB point1;
         private PointB point2;
 
+        
         //Color Settings
         private ObservableCollection<string> colors;
         private string pageROISelectedColor = "Red";
@@ -64,7 +67,6 @@ namespace Subdivider.ViewModels
 
         // App Functionality
         private bool enablePDFAutoOpen = true;
-        
 		#endregion Settings
 
 		private TemplateImage templateImage;
@@ -72,7 +74,10 @@ namespace Subdivider.ViewModels
         public static double imageWidth;
         public static double imageHeight;
 
-
+        private Task recalculationTask;
+        private CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        private CancellationToken cancelToken;
+        private bool recalculateEnabled = true;
 
 		#endregion
 
@@ -355,6 +360,14 @@ namespace Subdivider.ViewModels
 
         #endregion Settings 
 
+        public bool RecalculateEnabled
+		{
+			get { return this.recalculateEnabled;}
+			set
+			{
+                SetProperty(ref this.recalculateEnabled, value);
+			}
+        }
 
         public TemplateImage TemplateImage
         {
@@ -374,17 +387,15 @@ namespace Subdivider.ViewModels
         #endregion
 
         #region Commands
-
         public DelegateCommand OpenImageCommand { get; private set;}
         public DelegateCommand SliceImageCommand { get; private set;}
         public DelegateCommand ExportImageCommand { get; private set; }
         public DelegateCommand Recalculate { get; private set;}
+        public DelegateCommand CancelRecalculate { get; private set;}
         public DelegateCommand ThemeSwitchCommand { get; private set; }
         public DelegateCommand LicenseCommand { get; private set; }
-
         public DelegateCommand PDFCommand { get; private set; }
         public DelegateCommand HelpCommand { get; private set; }
-
         public DelegateCommand CoffeeCommand { get; private set; }
         public DelegateCommand WebsiteCommand { get; private set; }
         public DelegateCommand UnitCommand { get; private set; }
@@ -398,7 +409,7 @@ namespace Subdivider.ViewModels
             Colors= new ObservableCollection<string>(Lines.Color.Keys);
             OpenImageCommand = new DelegateCommand(LoadImage);
             ExportImageCommand = new DelegateCommand(Export);
-            Recalculate = new DelegateCommand(Recalc);
+            Recalculate = new DelegateCommand(StartRecalc);
             ThemeSwitchCommand = new DelegateCommand(ThemeSwap);
             LicenseCommand = new DelegateCommand(LicenseDisplay);
             HelpCommand = new DelegateCommand(HelpDisplay);
@@ -436,34 +447,66 @@ namespace Subdivider.ViewModels
         /// <summary>
         /// Used 
         /// </summary>
-        public void Recalc()
+        public void StartRecalc()
         {
-
-            if (this.point1.X != 0 && this.point1.Y != 0 && this.point2.X != 0 && this.point2.Y != 0)
-            {
-
-                double distanceBetween = pythag(new Point(this.point1.X, this.point1.Y),
-                    new Point(this.point2.X, this.point2.Y));
-
-                this.templateImage.PPI = distanceBetween / (this.SelectionLength * DetermineUnit());
-                this.PPI = (distanceBetween / (this.SelectionLength * DetermineUnit())).ToString();
-
-                this.TemplateImage = this.TemplateImage;
-                Slice();
-
-            }
+            double unit = DetermineUnit();
+            RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit);
         }
-        /// <summary>
-        /// Essentially recalculates the image
-        /// </summary>
-        public void Slice()
-        {
 
-            if (templateImage == null)
-                return;
+        public void CancelRecalcTask()
+		{
+            RecalculateEnabled = true;
+		}
+     
+        private  void RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
+		{
 
-            templateImage.PPI = Double.Parse(this.PPI);
-            templateImage.RecalculateTemplate();
+                double distanceBetween = pythag(new Point(point1.X, point1.Y),
+                    new Point(point2.X, point2.Y));
+
+                templateImage.PPI = distanceBetween / (selectionLength * unit);
+               
+                if(templateImage != null)
+				{
+
+
+                    //Create Page ROIS
+                    int width = (int)(templateImage.PaperSize.Width * templateImage.PPI);
+                    int height = (int)(templateImage.PaperSize.Height * templateImage.PPI);
+
+                    int totalROIS = (templateImage.WorkingImage.Cols / width) * (templateImage.WorkingImage.Rows / height);
+                    if (totalROIS > 5000)
+                    {
+                        var result = System.Windows.MessageBox.Show("Total ROIS = " + totalROIS + ".\nThis could cause the software to crash.\n\n Are you sure you want to continue?",
+                            "WARNING: Potential settings issue.",
+							System.Windows.MessageBoxButton.YesNo);
+
+                        if (result == System.Windows.MessageBoxResult.No)
+                        {
+                            return;
+                        }
+
+                    }
+
+                if (templateImage.Overlap)
+                    {
+                        (templateImage.PageRois, templateImage.OverlapRois) = 
+                            ImageProcessing.Opperation.CreatePageAndOverlapROIs(
+                                templateImage.WorkingImage,
+                                templateImage.PaperSize,
+                                templateImage.PPI,
+                                templateImage.OverlapPercentage);
+                    }
+                    else
+                    {
+                        templateImage.PageRois =  
+                            ImageProcessing.Opperation.CreatePageROIs(
+                                templateImage.WorkingImage, 
+                                templateImage.PaperSize, 
+                                templateImage.PPI);
+                        templateImage.OverlapRois = null;
+                    }
+                }
         }
 
         /// <summary>
@@ -558,7 +601,7 @@ namespace Subdivider.ViewModels
 
 				if (EnableCanny)
 				{
-                        var newImage = ImageProcessing.ProcessCanny(
+                        var newImage = ImageProcessing.Alteration.ProcessCanny(
                         TemplateImage.WorkingImage,
                         CannyThresh,
                         CannyThreshLinking);
@@ -584,7 +627,6 @@ namespace Subdivider.ViewModels
             if(this.templateImage != null)
             {
                 this.templateImage.PaperSize = Papers.Sizes[SelectedPaperSize];
-                Slice();
             }
         }
 

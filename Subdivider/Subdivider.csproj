@@ -19,6 +19,7 @@
   <ItemGroup>
     <None Remove="Resources\info.png" />
     <None Remove="Resources\instructions.png" />
+    <None Remove="Resources\XIcon.png" />
     <None Remove="Views\logo.png" />
     <None Remove="Views\logo_transparent.png" />
   </ItemGroup>
@@ -36,6 +37,7 @@
   <ItemGroup>
     <Resource Include="Resources\info.png" />
     <Resource Include="Resources\instructions.png" />
+    <Resource Include="Resources\XIcon.png" />
     <Resource Include="Views\logo.png" />
   </ItemGroup>
   <ItemGroup>

@@ -433,10 +433,6 @@
                         </ScrollViewer>
 
 						<Grid Grid.Row="2">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width=".8*"></ColumnDefinition>
-								<ColumnDefinition Width=".2*"></ColumnDefinition>
-							</Grid.ColumnDefinitions>
 							<Button
 								    Grid.Column="0"
 									HorizontalAlignment="Stretch"
@@ -447,16 +443,7 @@
 								    IsEnabled="{Binding RecalculateEnabled}"
 									Content="Recalculate">
 							</Button>
-							<Button
-								Grid.Column="1"
-							    HorizontalAlignment="Stretch"
-								Margin="5"
-								Background="#fc0349"
-								Height="50"
-								Command="{Binding CancelRecalculate}">
-								<Image Source="/Resources/XIcon.png" Margin="2,2,2,2"></Image>
-							</Button>
-						</Grid>
+					    </Grid>
 
 
 					</Grid>

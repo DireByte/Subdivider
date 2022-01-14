@@ -410,7 +410,6 @@ namespace Subdivider.ViewModels
             OpenImageCommand = new DelegateCommand(LoadImage);
             ExportImageCommand = new DelegateCommand(Export);
             Recalculate = new DelegateCommand(StartRecalc);
-            CancelRecalculate = new DelegateCommand(CancelRecalcTask);
             ThemeSwitchCommand = new DelegateCommand(ThemeSwap);
             LicenseCommand = new DelegateCommand(LicenseDisplay);
             HelpCommand = new DelegateCommand(HelpDisplay);
@@ -451,13 +450,7 @@ namespace Subdivider.ViewModels
         public void StartRecalc()
         {
             double unit = DetermineUnit();
-            RecalculateEnabled = false;
-            
-            this.recalculationTask = Task.Factory.StartNew(() =>
-            {
-                this.recalculationTask = Task.Run(() => TemplateImage = RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit));
-                RecalculateEnabled = true;
-            });
+            RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit);
         }
 
         public void CancelRecalcTask()
@@ -465,7 +458,7 @@ namespace Subdivider.ViewModels
             RecalculateEnabled = true;
 		}
      
-        private  TemplateImage RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
+        private  void RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
 		{
 
                 double distanceBetween = pythag(new Point(point1.X, point1.Y),
@@ -475,7 +468,27 @@ namespace Subdivider.ViewModels
                
                 if(templateImage != null)
 				{
-                    if (templateImage.Overlap)
+
+
+                    //Create Page ROIS
+                    int width = (int)(templateImage.PaperSize.Width * templateImage.PPI);
+                    int height = (int)(templateImage.PaperSize.Height * templateImage.PPI);
+
+                    int totalROIS = (templateImage.WorkingImage.Cols / width) * (templateImage.WorkingImage.Rows / height);
+                    if (totalROIS > 5000)
+                    {
+                        var result = System.Windows.MessageBox.Show("Total ROIS = " + totalROIS + ".\nThis could cause the software to crash.\n\n Are you sure you want to continue?",
+                            "WARNING: Potential settings issue.",
+							System.Windows.MessageBoxButton.YesNo);
+
+                        if (result == System.Windows.MessageBoxResult.No)
+                        {
+                            return;
+                        }
+
+                    }
+
+                if (templateImage.Overlap)
                     {
                         (templateImage.PageRois, templateImage.OverlapRois) = 
                             ImageProcessing.Opperation.CreatePageAndOverlapROIs(
@@ -494,8 +507,6 @@ namespace Subdivider.ViewModels
                         templateImage.OverlapRois = null;
                     }
                 }
-            
-            return templateImage;
         }
 
         /// <summary>

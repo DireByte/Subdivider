@@ -440,7 +440,6 @@
 								    Height="50"
 								    Margin="5"
 									Command="{Binding Recalculate}"
-								    IsEnabled="{Binding RecalculateEnabled}"
 									Content="Recalculate">
 							</Button>
 					    </Grid>

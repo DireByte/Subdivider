@@ -74,11 +74,6 @@ namespace Subdivider.ViewModels
         public static double imageWidth;
         public static double imageHeight;
 
-        private Task recalculationTask;
-        private CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-        private CancellationToken cancelToken;
-        private bool recalculateEnabled = true;
-
 		#endregion
 
 		#region Public Properties
@@ -360,15 +355,6 @@ namespace Subdivider.ViewModels
 
         #endregion Settings 
 
-        public bool RecalculateEnabled
-		{
-			get { return this.recalculateEnabled;}
-			set
-			{
-                SetProperty(ref this.recalculateEnabled, value);
-			}
-        }
-
         public TemplateImage TemplateImage
         {
             get { return templateImage;}
@@ -453,11 +439,6 @@ namespace Subdivider.ViewModels
             RecalculateROIs(this.TemplateImage, this.point1, this.point2, this.selectionLength, unit);
         }
 
-        public void CancelRecalcTask()
-		{
-            RecalculateEnabled = true;
-		}
-     
         private  void RecalculateROIs(TemplateImage templateImage, PointB point1, PointB point2, double selectionLength, double unit)
 		{
 

@@ -28,7 +28,7 @@
                 BorderBrush="#C4CAD0"
                 BorderThickness="2">
 
-            <paz:ZoomBorder PanButton="Left"
+            <paz:ZoomBorder PanButton="Middle"
                             Stretch="None"
                             ZoomSpeed="1.2"
                             EnableConstrains="False"
@@ -44,7 +44,8 @@
                                 Background="Transparent"
                                 RenderTransformOrigin="0.5,0.5"
                                 x:FieldModifier="public"
-                                MouseUp="canvasDisplay_MouseClickerEvent"
+                                MouseLeftButtonDown="canvasDisplay_MouseLeftButtonDown"
+                                MouseRightButtonDown="canvasDisplay_MouseRightButtonDown"
                                 Panel.ZIndex="1" />
                         <Canvas Grid.Column="0"
                                 Grid.Row="0"

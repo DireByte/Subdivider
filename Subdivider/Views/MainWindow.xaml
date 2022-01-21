@@ -130,16 +130,24 @@
 
                                     <Expander
                                         Name="ScaleSettings"
-                                        Padding="5"
+                                        Margin="5"
 								        Background="#435055"
                                         ExpandDirection="Down"
                                         FontSize="28"
 										FontWeight="SemiBold"
                                         Header="Scale Settings"
+                                       
                                         IsExpanded="True">
-
-                                        <StackPanel>
-											<GroupBox>
+                                        <Grid 
+                                            Background="#27323A"
+                                            >
+                                        <StackPanel
+                                            
+                                            Margin="5"
+                                            
+                                            >
+											<GroupBox
+>
 												<GroupBox.Header>
 													<StackPanel>
 														<Label FontSize="20"
@@ -156,20 +164,38 @@
                                                         <RowDefinition />
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
-													<StackPanel Grid.Row="0"
-																Orientation="Horizontal"
-																>
-														<Label Grid.Row="1"
+
+                                                    <Grid Grid.Row="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="8*" />
+                                                            <ColumnDefinition Width="2*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition>
+                                                            </RowDefinition>
+                                                            <RowDefinition></RowDefinition>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Label Grid.Column="0"
+                                                               Grid.Row="0"
+                                                               DockPanel.Dock="Left"
 															   FontStyle="Normal"
 															   FontWeight="Normal"
 															   FontSize="18">
-															Linear Dimension
-														</Label>
-														<Image Margin="5,3,0,0"
+                                                                Linear Dimension
+                                                            </Label>
+                                                            <Image  Grid.Column="1"
+                                                                    Grid.Row="0"
+                                                                      Height="24"
+                                                                    Margin="5,3,0,0"
 															   VerticalAlignment="Top"
-															   Source="/Resources/info.png"
+                                                               DockPanel.Dock="Right"
+                                                             
+                                                               Source="/Resources/info.png"
 															   ToolTip="{Binding LinearDimentionToolTip}"></Image>
-													</StackPanel>
+                                                        <Separator Grid.ColumnSpan="2" Grid.Row="1"></Separator>
+                                                    </Grid>
+
 													<StackPanel Grid.Row="1"
 																Margin="0"
 																Orientation="Horizontal">
@@ -226,20 +252,32 @@
                                             -->
                                             <GroupBox>
 												<GroupBox.Header>
-													<StackPanel>
-														<StackPanel Orientation="Horizontal">
-														<Label FontSize="20"
+
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="8*" />
+                                                            <ColumnDefinition Width="2*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition>
+                                                            </RowDefinition>
+                                                            <RowDefinition></RowDefinition>
+                                                        </Grid.RowDefinitions>
+                                                        <Label Grid.Column="0"
+                                                                FontSize="20"
 															   FontWeight="Normal"
 															   FontStyle="Normal">
-															Overlap Settings</Label>
-														<Image Margin="5,4,0,0"
+                                                            Overlap Settings</Label>
+                                                        <Image Grid.Column="1"
+                                                               Height="24"
+                                                               Margin="5,4,0,0"
 															   VerticalAlignment="Top"
 															   Source="/Resources/info.png"
 															   ToolTip="{Binding EnableOverlapToolTip}"></Image>
-													    </StackPanel>
-														<Separator></Separator>
-										            </StackPanel>
-										</GroupBox.Header>
+
+                                                        <Separator Grid.ColumnSpan="2" Grid.Row="1"></Separator>
+                                                    </Grid>
+                                                </GroupBox.Header>
 												<Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
@@ -262,22 +300,31 @@
 															VerticalAlignment="Bottom" />
                                                 </Grid>
                                             </GroupBox>
-											<StackPanel
-												Orientation="Horizontal">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="8*" />
+                                                    <ColumnDefinition Width="2*"/>
+                                                </Grid.ColumnDefinitions>
+                                 
 													<CheckBox 
+                                                        Grid.Column="0"
 														Content="Enable Page Selection"
 													    FontWeight="Normal"
 														IsChecked="{Binding EnablePageSelection}" 
 														/>
-													<Image Margin="5,4,0,0"
+													<Image 
+                                                           Grid.Column="1"
+                                                           Height="24"
+                                                           Margin="5,4,0,0"
 														   VerticalAlignment="Top"
 														   Source="/Resources/info.png"
 														   ToolTip="{Binding EnablePageSelectionToolTip}"></Image>
-											</StackPanel>
-										</StackPanel>
-
+                                                 </Grid>
+                                        </StackPanel>
+                                        </Grid>
                                     </Expander>
-
+                                    
+                                    
                                     <!--
                                     <Line
                                         Margin="0,30,0,20"
@@ -290,56 +337,75 @@
 
 									<Expander
 										Name="ImageProcessing"
-										Padding="5"
-                                        Background="#27323A"
+										Margin="5"
+                                        Background="#435055"
                                         ExpandDirection="Down"
 										FontWeight="SemiBold"
                                         FontSize="28"
                                         Header="Image Processing"
                                         IsExpanded="True">
+                                        <Grid 
+                                            Background="#27323A"
+                                            >
+                                            <StackPanel
+                                             Margin="5">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <GroupBox>
+                                                        <GroupBox.Header>
 
-										<StackPanel>
-										    <Grid>
-													<Grid.RowDefinitions>
-														<RowDefinition />
-													</Grid.RowDefinitions>
-													<GroupBox>
-													<GroupBox.Header>
-														<StackPanel>
-															<StackPanel Orientation="Horizontal">
-															<Label FontSize="20"
+                                                            <Grid Grid.Row="0">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="8*" />
+                                                                    <ColumnDefinition Width="2*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition>
+                                                                    </RowDefinition>
+                                                                    <RowDefinition></RowDefinition>
+                                                                </Grid.RowDefinitions>
+
+                                                                <Label Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                   FontSize="20"
 																   FontWeight="Normal"
 																   FontStyle="Normal">
-																Canny Edges (Beta)</Label>
-															<Image Margin="5,4,0,0"
+                                                                    Canny Edges (Beta)</Label>
+                                                                <Image Grid.Column="1"
+                                                                   Grid.Row="0"
+                                                                   Height="24"
+                                                                   Margin="5,4,0,0"
 																   VerticalAlignment="Top"
 																   Source="/Resources/info.png"
 																   ToolTip="{Binding CannyEdgesToolTip}"></Image>
-														</StackPanel>
-															<Separator></Separator>
-														</StackPanel>
-													</GroupBox.Header>
-														<Grid>
-															<Grid.RowDefinitions>
-															<RowDefinition></RowDefinition>
-															<RowDefinition></RowDefinition>
-															<RowDefinition></RowDefinition>
-															<RowDefinition></RowDefinition>
-															<RowDefinition></RowDefinition>
-															<RowDefinition></RowDefinition>
-															</Grid.RowDefinitions>
-															<TextBlock Grid.Row="0" 
+                                                                <Separator Grid.ColumnSpan="2" Grid.Row="1"></Separator>
+                                                            </Grid>
+
+
+                                                        </GroupBox.Header>
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition></RowDefinition>
+                                                                <RowDefinition></RowDefinition>
+                                                                <RowDefinition></RowDefinition>
+                                                                <RowDefinition></RowDefinition>
+                                                                <RowDefinition></RowDefinition>
+                                                                <RowDefinition></RowDefinition>
+                                                            </Grid.RowDefinitions>
+                                                            <TextBlock Grid.Row="0" 
 																	   TextWrapping="Wrap" 
 																	   Margin="0,0,0,5"
 																	   FontSize="14"
 																	   FontWeight="Normal"
 																	   Text="Edge detection may be slow based on image size and hardware."></TextBlock>
-														    <CheckBox Grid.Row="1"
+                                                            <CheckBox Grid.Row="1"
 																  Content="Enable Edges"
 																  FontWeight="Normal"
 																  IsChecked="{Binding EnableCanny}" />
-															<Label Grid.Row="2" Content="Binarization Threshold"></Label>
-															<Slider Grid.Row="3"
+                                                            <Label Grid.Row="2" Content="Binarization Threshold"></Label>
+                                                            <Slider Grid.Row="3"
 																	AutoToolTipPlacement="TopLeft"
 																    IsEnabled="{Binding EnableCanny}"
 																	LargeChange="5"
@@ -347,8 +413,8 @@
 																	Maximum="255"
 																	SmallChange="0"
 																	Value="{Binding CannyThresh}" />
-															<Label Grid.Row="4" Content="Edge Linking Threshold"></Label>
-															<Slider Grid.Row="5"
+                                                            <Label Grid.Row="4" Content="Edge Linking Threshold"></Label>
+                                                            <Slider Grid.Row="5"
 																	AutoToolTipPlacement="TopLeft"
 															    	IsEnabled="{Binding EnableCanny}"
 																	LargeChange="5"
@@ -356,24 +422,27 @@
 																	Maximum="255"
 																	SmallChange="0"
 																	Value="{Binding CannyThreshLinking}" />
-														</Grid>
-													</GroupBox>
-												</Grid>
-										</StackPanel>
-									
-									</Expander>
+                                                        </Grid>
+                                                    </GroupBox>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Expander>
 									
                                     <Expander
                                         Name="ColorSettings"
                                         Background="#435055"
-										Padding="5"
+									     Margin="5"
                                         ExpandDirection="Down"
                                         FontSize="28"
 										FontWeight="SemiBold"
                                         Header="Color Settings"
                                         >
-
-                                        <StackPanel>
+                                        <Grid 
+                                            Background="#27323A"
+                                            >
+                                            <StackPanel
+                                            Margin="5">
 
                                             <GroupBox Header="Selection Tool Color" FontWeight="Normal">
                                                 <Grid>
@@ -426,10 +495,13 @@
                                                 </Grid>
                                             </GroupBox>
                                         </StackPanel>
+                                        </Grid>
                                     </Expander>
 
                                 </StackPanel>
-                            </Grid>
+
+                       
+                    </Grid>
                         </ScrollViewer>
 
 						<Grid Grid.Row="2">

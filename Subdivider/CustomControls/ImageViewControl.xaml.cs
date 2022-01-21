@@ -231,6 +231,7 @@ namespace Subdivider.CustomControls
 
         #region Internal Properties
         
+        private bool PointToggler = true;
         private List<UIElement> ClickMarkers = new List<UIElement>();
         private List<UIElement> MainCanvasPageRoiControls = new List<UIElement>();
         private List<UIElement> CornerCanvasPageRoiControls = new List<UIElement>();
@@ -246,18 +247,35 @@ namespace Subdivider.CustomControls
 
         #region Event Handlers
 
-        private void canvasDisplay_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) //places a marker and updates visuals
-        {
-            Point1 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
-            ClearMarkersAndLines();
-            UpdateMarkersAndLines();
-        }
+        //private void canvasDisplay_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) //places a marker and updates visuals
+        //{
+        //    if (Keyboard.IsKeyDown(Key.LeftCtrl))
+        //    { 
+        //         Point1 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
+        //        ClearMarkersAndLines();
+        //        UpdateMarkersAndLines();
+        //    }
+        //}
 
-        private void canvasDisplay_MouseRightButtonDown(object sender, MouseButtonEventArgs e) //places a marker and updates visuals
+        private void canvasDisplay_MouseClickerEvent(object sender, MouseButtonEventArgs e) //places a marker and updates visuals
         {
-            Point2 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
-            ClearMarkersAndLines();
-            UpdateMarkersAndLines();
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                if(PointToggler)
+				{
+                    PointToggler = !PointToggler;
+                    Point1 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
+                    ClearMarkersAndLines();
+                    UpdateMarkersAndLines();
+                }
+				else
+				{
+                    PointToggler = !PointToggler;
+                    Point2 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
+                    ClearMarkersAndLines();
+                    UpdateMarkersAndLines();
+                }
+            }
         }
         private void ResetButton_Click(object sender, RoutedEventArgs e) //resets zoom panel
         {
@@ -460,5 +478,7 @@ namespace Subdivider.CustomControls
         }
 
 		#endregion
+
+	
 	}
 }

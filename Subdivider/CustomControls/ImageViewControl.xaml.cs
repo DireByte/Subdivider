@@ -261,14 +261,14 @@ namespace Subdivider.CustomControls
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                if(PointToggler)
+                if(e.ChangedButton == MouseButton.Left)
 				{
                     PointToggler = !PointToggler;
                     Point1 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);
                     ClearMarkersAndLines();
                     UpdateMarkersAndLines();
                 }
-				else
+				else if(e.ChangedButton == MouseButton.Right)
 				{
                     PointToggler = !PointToggler;
                     Point2 = new PointB((int)e.GetPosition(canvasDisplay).X, (int)e.GetPosition(canvasDisplay).Y);

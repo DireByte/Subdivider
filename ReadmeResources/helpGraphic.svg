@@ -131,29 +131,24 @@
    inkscape:pageshadow="0"
    inkscape:pageopacity="0"
    inkscape:pagecheckerboard="0"
-   showgrid="false"
-   inkscape:zoom="0.04611167"
-   inkscape:cx="3906.0009"
-   inkscape:cy="2391.9944"
-   inkscape:window-width="1284"
-   inkscape:window-height="1040"
-   inkscape:window-x="2050"
-   inkscape:window-y="418"
-   inkscape:window-maximized="0"
+   showgrid="true"
+   inkscape:zoom="0.17167807"
+   inkscape:cx="4476.4017"
+   inkscape:cy="2029.9622"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   inkscape:window-x="1912"
+   inkscape:window-y="399"
+   inkscape:window-maximized="1"
    inkscape:current-layer="Capa_1"
    inkscape:snap-grids="true"
    inkscape:snap-nodes="false"
    width="1920mm"
    units="mm"
-   inkscape:rotation="-1"
-   inkscape:document-units="mm" />
-<path
-   d="m 3687.8998,2691.9568 h -102.3447 c -211.498,0 -377.1713,139.7176 -377.1713,318.0813 v 445.3335 c 0,178.3819 165.6733,318.115 377.1713,318.115 h 102.3447 c 216.3437,0 392.3532,-142.7044 392.3532,-318.115 v -445.3335 c 0,-175.3898 -176.0095,-318.0813 -392.3532,-318.0813 z m -47.5404,166.6887 h 7.918 c 12.3758,0 22.449,8.1631 22.449,18.1975 v 129.5478 c 0,10.0346 -10.0732,18.1974 -22.449,18.1974 h -7.918 c -12.3758,0 -22.449,-8.1628 -22.449,-18.1974 V 2876.843 c 0,-10.0344 10.0732,-18.1975 22.449,-18.1975 z m 388.5817,596.7261 c 0,152.474 -152.9896,276.5209 -341.0413,276.5209 h -102.3447 c -182.7281,0 -325.8594,-121.463 -325.8594,-276.5209 v -445.3335 c 0,-155.0373 143.1345,-276.487 325.8594,-276.487 h 32.7915 v 86.2221 c -29.9532,7.6092 -51.7481,30.3143 -51.7481,57.0724 v 129.5478 c 0,26.7555 21.7949,49.4633 51.7481,57.0698 v 107.0167 c 0,11.4851 11.4875,20.7971 25.6559,20.7971 14.1685,0 25.6559,-9.312 25.6559,-20.7971 V 3063.614 c 30.2773,-7.448 52.3799,-30.278 52.3799,-57.2206 V 2876.843 c 0,-26.9426 -22.1026,-49.7726 -52.3799,-57.2232 v -86.0687 h 18.2414 c 188.0517,0 341.0413,124.0313 341.0413,276.487 z"
-   id="path53"
-   style="fill:#ffffff;stroke-width:2.88739"
-   inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
-   inkscape:export-xdpi="353.61612"
-   inkscape:export-ydpi="353.61612" />
+   inkscape:document-units="mm"><inkscape:grid
+     type="xygrid"
+     id="grid52431" /></sodipodi:namedview>
+
 <g
    id="g55"
    style="fill:#ffffff"
@@ -229,11 +224,17 @@
    style="fill:#ffffff"
    transform="matrix(0.24598434,0,0,0.24598434,229.44774,157.81572)">
 </g>
-<text
+<path
+   d="m 3687.8998,2691.9568 h -102.3447 c -211.498,0 -377.1713,139.7176 -377.1713,318.0813 v 445.3335 c 0,178.3819 165.6733,318.115 377.1713,318.115 h 102.3447 c 216.3437,0 392.3532,-142.7044 392.3532,-318.115 v -445.3335 c 0,-175.3898 -176.0095,-318.0813 -392.3532,-318.0813 z m -47.5404,166.6887 h 7.918 c 12.3758,0 22.449,8.1631 22.449,18.1975 v 129.5478 c 0,10.0346 -10.0732,18.1974 -22.449,18.1974 h -7.918 c -12.3758,0 -22.449,-8.1628 -22.449,-18.1974 V 2876.843 c 0,-10.0344 10.0732,-18.1975 22.449,-18.1975 z m 388.5817,596.7261 c 0,152.474 -152.9896,276.5209 -341.0413,276.5209 h -102.3447 c -182.7281,0 -325.8594,-121.463 -325.8594,-276.5209 v -445.3335 c 0,-155.0373 143.1345,-276.487 325.8594,-276.487 h 32.7915 v 86.2221 c -29.9532,7.6092 -51.7481,30.3143 -51.7481,57.0724 v 129.5478 c 0,26.7555 21.7949,49.4633 51.7481,57.0698 v 107.0167 c 0,11.4851 11.4875,20.7971 25.6559,20.7971 14.1685,0 25.6559,-9.312 25.6559,-20.7971 V 3063.614 c 30.2773,-7.448 52.3799,-30.278 52.3799,-57.2206 V 2876.843 c 0,-26.9426 -22.1026,-49.7726 -52.3799,-57.2232 v -86.0687 h 18.2414 c 188.0517,0 341.0413,124.0313 341.0413,276.487 z"
+   id="path53"
+   style="fill:#ffffff;stroke-width:2.88739"
+   inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
+   inkscape:export-xdpi="353.61612"
+   inkscape:export-ydpi="353.61612" /><text
    xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
-   x="1804.4104"
-   y="2712.3613"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
+   x="2268.8423"
+   y="2539.0894"
    id="text4568"
    inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
    inkscape:export-xdpi="353.61612"
@@ -241,12 +242,36 @@
    transform="scale(1.1106894,0.90034172)"><tspan
      sodipodi:role="line"
      id="tspan4566"
-     x="1804.4104"
-     y="2712.3613"
-     style="font-size:156.508px;fill:#ffffff;stroke-width:11.7381">Set first point</tspan></text><text
+     x="2268.8423"
+     y="2539.0894"
+     style="font-size:156.508px;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:11.7381">LCtrl + LClick</tspan><tspan
+     sodipodi:role="line"
+     x="2268.8423"
+     y="2734.7244"
+     style="font-size:156.508px;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:11.7381"
+     id="tspan18682">Set First Point</tspan></text><text
+   xml:space="preserve"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
+   x="4327.98"
+   y="2525.7058"
+   id="text4568-6"
+   inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
+   inkscape:export-xdpi="353.61612"
+   inkscape:export-ydpi="353.61612"
+   transform="scale(1.1106894,0.90034172)"><tspan
+     sodipodi:role="line"
+     id="tspan4566-7"
+     x="4327.98"
+     y="2525.7058"
+     style="font-size:156.508px;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:11.7381">LCtrl + RClick</tspan><tspan
+     sodipodi:role="line"
+     x="4327.98"
+     y="2721.3408"
+     style="font-size:156.508px;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:11.7381"
+     id="tspan18682-7">Set Second Point</tspan></text><text
    xml:space="preserve"
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
-   x="2223.5593"
+   x="2781.8015"
    y="2214.2432"
    id="text4568-7"
    inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
@@ -254,10 +279,10 @@
    inkscape:export-ydpi="353.61612"
    transform="scale(1.1106894,0.90034172)"><tspan
      sodipodi:role="line"
-     x="2223.5593"
+     x="2781.8015"
      y="2214.2432"
      style="font-size:156.508px;fill:#ffffff;stroke-width:11.7381"
-     id="tspan39168">Scroll to zoom / Click to pan</tspan></text><text
+     id="tspan39168">Scroll to Zoom</tspan></text><text
    xml:space="preserve"
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
    x="1135.2765"
@@ -271,21 +296,7 @@
      x="1135.2765"
      y="943.45917"
      style="font-size:156.508px;fill:#ffffff;stroke-width:11.7381"
-     id="tspan39168-8">File &gt; Open Image</tspan></text><text
-   xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:156.508px;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#000000;fill-opacity:1;stroke:none;stroke-width:11.7381"
-   x="3844.4026"
-   y="2723.8892"
-   id="text4568-2"
-   inkscape:export-filename="C:\Users\bullf\Downloads\path53.png"
-   inkscape:export-xdpi="353.61612"
-   inkscape:export-ydpi="353.61612"
-   transform="scale(1.1106894,0.90034172)"><tspan
-     sodipodi:role="line"
-     id="tspan4566-2"
-     x="3844.4026"
-     y="2723.8892"
-     style="font-size:156.508px;fill:#ffffff;stroke-width:11.7381">Set second point</tspan></text><path
+     id="tspan39168-8">File &gt; Open Image</tspan></text><path
    style="fill:#ffffff;stroke:#ffffff;stroke-width:10.5981px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker42529)"
    d="M 3263.0148,2740.8309 3053.5546,2503.1228"
    id="path41271"
@@ -498,7 +509,7 @@
      id="tspan39168-8-1-2">Set Dimension and</tspan><tspan
      sodipodi:role="line"
      x="4773.1733"
-     y="1139.0945"
+     y="1139.0941"
      style="font-size:156.508px;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:11.7381"
      id="tspan71106">Recalculate</tspan></text><g
    id="g50398"
@@ -560,4 +571,7 @@
 </g><g
      id="g50373"
      style="fill:#ffffff;fill-opacity:1">
-</g></g></svg>
+</g></g><g
+   inkscape:groupmode="layer"
+   id="layer1"
+   inkscape:label="Layer 1" /></svg>

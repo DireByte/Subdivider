@@ -36,9 +36,9 @@ namespace Subdivider.CustomControls.UIElements
             }
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        protected override void OnMouseUp(MouseButtonEventArgs e)
         {
-            base.OnMouseDown(e);
+            base.OnMouseUp(e);
             Clicked = !Clicked;
             changeColor();
         }

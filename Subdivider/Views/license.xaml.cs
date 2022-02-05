@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,25 +22,18 @@ namespace Subdivider
         public License()
         {
             InitializeComponent();
-            licenseText.Text = "";
+            licenseText.Text = "Error loading license resource";
 
-            string path = Directory.GetCurrentDirectory();
+            var currentAssembly = Assembly.GetExecutingAssembly();
 
-            path = path + "\\Resources\\license.txt";
-
-
-
-            // This text is added only once to the file.
-            if (!File.Exists(path))
+            string[] names = currentAssembly.GetManifestResourceNames();
+            using (var stream = currentAssembly.GetManifestResourceStream("Subdivider.Resources.license.txt"))
+            using (var reader = new StreamReader(stream))
             {
-                // Create a file to write to.
-                licenseText.Text = "Could not find license file!";
+                // TODO: read the stream here
+                licenseText.Text = reader.ReadToEnd();
+
             }
-
-            // Open the file to read from.
-            string readText = File.ReadAllText(path);
-
-            licenseText.Text = readText;
           
         }
 

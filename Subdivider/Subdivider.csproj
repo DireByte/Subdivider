@@ -21,6 +21,7 @@
   <ItemGroup>
     <None Remove="Resources\info.png" />
     <None Remove="Resources\instructions.png" />
+    <None Remove="Resources\license.txt" />
     <None Remove="Resources\XIcon.png" />
     <None Remove="Views\logo.png" />
     <None Remove="Views\logo_transparent.png" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <Resource Include="Resources\info.png" />
     <Resource Include="Resources\instructions.png" />
+    <EmbeddedResource Include="Resources\license.txt" />
     <Resource Include="Resources\XIcon.png" />
     <Resource Include="Views\logo.png" />
   </ItemGroup>
@@ -54,10 +56,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Resources\license.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
